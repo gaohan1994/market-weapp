@@ -1,0 +1,71 @@
+@import "../../styles/theme.less";
+
+@sign-prefix: sign;
+@check-icon-size: 24px;
+@sign-input-box-size: 590px;
+
+.@{sign-prefix} {
+  .background-image('//net.huanmusic.com/weapp/v1/bg.png');
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &-card {
+    .margin(150px, t);
+    width: 720px;
+    height: 700px;
+    .background-image('//net.huanmusic.com/weapp/bg_login.png');
+    .padding(50px, tb);
+    .padding(50px + 25px, lr);
+    &-title {
+      font-size: 42px;
+      color: @theme-color;
+      font-weight: bold;
+      .margin(54px, b);
+      .margin(10px, t);
+      .flex(center, center);
+    }
+    &-input {
+      .margin(24px, b);
+    }
+    &-check {
+      .flex(center);
+      .margin(46px, b);
+      .padding(6px, lr);
+      &-icon {
+        width: @check-icon-size;
+        height: @check-icon-size;
+        .margin(8px, r);
+      }
+      &-uncheck {
+        border-radius: @check-icon-size / 2;
+        border: 1px solid #A0A0A0;
+      }
+    }
+  }
+  &-input {
+    &-box {
+      width: @sign-input-box-size;
+      border-radius: 10px;
+      border: 1px solid #EDEDED;
+      .padding(26px, tb);
+      .padding(24px, lr);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &-icon {
+        width: 43px;
+        height: 43px;
+        .margin(60px, r);
+      }
+      &-input {
+        width: 100%;
+        font-size: 30px;
+        color: #666666;
+      }
+    }
+    &-container {
+      display: flex;
+      flex: 1;
+    }
+  }
+}

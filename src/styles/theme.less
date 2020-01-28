@@ -1,0 +1,166 @@
+/**
+ * @Author: Ghan 
+ * @Date: 2019-10-30 11:33:11 
+ * @Last Modified by: Ghan
+ * @Last Modified time: 2020-01-27 22:48:33
+ */
+
+// 主色调
+@theme-color: #2a86fc;
+// placeholer-text-color: placeholer颜色
+@placeholer-text-color: #cccccc;
+// base-font-color: 字体颜色
+@base-font-color: #666666;
+// 标题字体大小
+@title-text-fontsize: 36px;
+// 标题字体颜色
+@title-text-color: @base-font-color;
+// 普通文字字体大小
+@normal-text-fontsize: 26px;
+// 普通文字字体颜色
+@normal-text-color: @base-font-color;
+// 小文本文字字体大小
+@small-text-fontsize: 24px;
+// 小文本文字字体颜色
+@small-text-color: @base-font-color;
+// primary-button-size: 按钮大小 
+@primary-button-size: 80px;
+
+.title-text (@color: @title-text-color) {
+  font-size: @title-text-fontsize;
+  color: @color;
+  font-weight: bold;
+}
+
+.title-text {
+  font-size: @title-text-fontsize;
+  color: @title-text-color;
+  font-weight: bold;
+}
+
+.normal-text {
+  font-size: @normal-text-fontsize;
+  color: @normal-text-color;
+}
+
+.small-text {
+  font-size: @small-text-fontsize;
+  color: @small-text-color;
+}
+
+.border1px {
+  content: '';
+  position: absolute;
+  transform-origin: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: scaleY(0.5);
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  &-color {
+    background-color: #f2f2f2;
+  }
+  &-border::after {
+    content: '';
+    position: absolute;
+    transform-origin: center;
+    box-sizing: border-box;
+    pointer-events: none;
+    
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: scaleY(0.5);
+    border-bottom: 1px solid #e3e3e3;
+  }
+}
+
+.flex (@alignItems: flex-start, @justifyContent: flex-start, @flexDirection: row) {
+  display: flex;
+  align-items: @alignItems;
+  justify-content: @justifyContent;
+  flex-direction: @flexDirection;
+} 
+
+.background-image (@imageUrl) {
+  background-image: ~"url(@{imageUrl})";
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.margin(@value: 1px, @position: all) when (@position = all) {
+  margin-top: @value;
+  margin-right: @value;
+  margin-bottom: @value;
+  margin-left: @value;
+}
+
+.margin(@value: 1px, @position: all) when (@position = t) {
+  margin-top: @value;
+}
+
+.margin(@value: 1px, @position: all) when (@position = r) {
+  margin-right: @value;
+}
+
+.margin(@value: 1px, @position: all) when (@position = b) {
+  margin-bottom: @value;
+}
+
+.margin(@value: 1px, @position: all) when (@position = l) {
+  margin-left: @value;
+}
+
+.margin(@value: 1px, @position: all) when (@position = tb) {
+  margin-top: @value;
+  margin-bottom: @value;
+}
+
+.margin(@value: 1px, @position: all) when (@position = lr) {
+  margin-left: @value;
+  margin-right: @value;
+}
+
+
+.padding(@value: 1px, @position: all) when (@position = all) {
+  padding-top: @value;
+  padding-right: @value;
+  padding-bottom: @value;
+  padding-left: @value;
+}
+
+.padding(@value: 1px, @position: all) when (@position = t) {
+  padding-top: @value;
+}
+
+.padding(@value: 1px, @position: all) when (@position = r) {
+  padding-right: @value;
+}
+
+.padding(@value: 1px, @position: all) when (@position = b) {
+  padding-bottom: @value;
+}
+
+.padding(@value: 1px, @position: all) when (@position = l) {
+  padding-left: @value;
+}
+
+.padding(@value: 1px, @position: all) when (@position = tb) {
+  padding-top: @value;
+  padding-bottom: @value;
+}
+
+.padding(@value: 1px, @position: all) when (@position = lr) {
+  padding-left: @value;
+  padding-right: @value;
+}

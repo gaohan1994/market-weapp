@@ -1,0 +1,101 @@
+@import "../styles/theme.less";
+
+@form-prefix: component-form;
+@form-input-width: 300px;
+
+.@{form-prefix} {
+  .margin(14px, t);
+  &-buttons {
+    .flex(center, center);
+  }
+  &-shadow {
+    box-sizing: border-box;
+  }
+  &-info {
+    &-333333 {
+      color: #333333 !important;
+    }
+    &-666666 {
+      color: #666666 !important;
+    }
+  }
+  &-color {
+    &-333333 {
+      color: #333333 !important;
+    }
+    &-666666 {
+      color: #666666 !important;
+    }
+    &-4d4d4d {
+      color: #4d4d4d !important;
+    }
+  }
+  &-size {
+    &-36 {
+      font-size: 36px !important;
+    }
+    &-34 {
+      font-size: 34px !important;
+    }
+  }
+  &-input {
+    width: @form-input-width;
+    .padding(0px) !important;
+  }
+  &-price {
+    font-size: 30px;
+    color: #FC4E44;
+    // padding-right: 18px;
+  }
+  &-black {
+    font-size: 30px;
+    color: #4d4d4d;
+  }
+  &-title {
+    font-size: 36px;
+    color: #4d4d4d;
+  }
+  &-gray {
+    font-size: 30px;
+    color: #999999;
+  }
+  &-placeholder {
+    font-size: 26px;
+    color: #666666;
+  }
+  &-arrow {
+    width: 13px;
+    height: 24px;
+    margin-left: 16px;
+  }
+  &-bold {
+    font-weight: bold;
+  }
+  &-button {
+    min-width: 120px;
+    .padding(10px, tb);
+    .padding(18px, lr);
+    .flex(center, center, row);
+    border: 2px solid;
+    .margin(15px, l);
+    font-size: 26px;
+    border-radius: 22px;
+    line-height: 26px;
+    &-confirm {
+      border-color: @theme-color;
+      color: @theme-color;
+    }
+    &-cancel {
+      border-color: #E6E6E6;
+      color: #999999;
+    }
+  }
+  &-input {
+    max-width: 380px;
+    &-max {
+      position: absolute;
+      right: 0;
+      width: 450px !important;
+    }
+  }
+}

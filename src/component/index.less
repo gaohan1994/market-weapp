@@ -1,0 +1,72 @@
+
+@import "../styles/theme.less";
+
+@prefix-product: component-product;
+
+.@{prefix-product} {
+  .margin(20px, t);
+  .margin(20px, l);
+  width: 346px;
+  background-color: #fff;
+  min-height: 300px;
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  &-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 460px;
+  }
+  &-detail {
+    position: relative;
+    .padding(20px);
+    display: flex;
+    flex-direction: column;
+    &::after {
+      .border1px;
+    }
+    &-title {
+      font-size: 30px;
+      color: #2B2F33;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    &-box {
+      .flex(center, space-between, row);
+
+      &-price {
+        font-size: 30px;
+        color: #FF7332;
+        font-weight: bold;
+      }
+      &-view {
+        font-size: 22px;
+        color: #828E99;
+      }
+    }
+  }
+  &-user {
+    .padding(20px);
+    .flex(center, flex-start, row);
+    &-avator {
+      width: 58px;
+      height: 58px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      border-radius: 10px;
+    }
+    &-name {
+      font-size: 22px;
+      color: #828E99;
+      .margin(20px, l);
+    }
+  }
+}

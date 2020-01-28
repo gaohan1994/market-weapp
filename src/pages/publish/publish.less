@@ -1,0 +1,37 @@
+@import "../../styles/theme.less";
+
+@prefix: publish;
+
+.@{prefix} {
+  &-images {
+
+    &-image {
+      width: 150px;
+      height: 150px;
+      .margin(23px, l);
+      .margin(23px, t);
+      border-radius: 10px;
+      background-repeat: no-repeat;  
+      background-size: cover;
+      background-position: center center;
+      position: relative;
+      &-close {
+        position: absolute;
+        left: 0;
+        top: 0;
+
+      }
+    }
+  }
+
+  &-placeholder {
+    font-size: 26px;
+    color: #C6C6C6;
+  }
+  &-button {
+    .margin(40px, t);
+    border: 0px !important;
+    width: 600px;
+    background: linear-gradient(90deg,rgba(240,80,101,1) 0%,rgba(253,167,92,1) 100%);
+  }
+}
