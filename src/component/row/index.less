@@ -1,0 +1,26 @@
+@import "../../styles/theme.less";
+@prefix: row-component;
+
+.@{prefix} {
+  width: 100%;
+  .padding(30px, lr);
+  .padding(30px, tb);
+  position: relative;
+  &::after {
+    .border1px;
+  }
+  .flex(center, flex-start, row);
+
+  &-bge {
+    width: 6px;
+    height: 30px;
+    background-color: #589EFA;
+    border-radius: 3px;
+    .margin(10px, r);
+  }
+
+  &-title {
+    font-size: 30px;
+    color: #333333;
+  }
+}

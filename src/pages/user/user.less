@@ -1,4 +1,48 @@
-.index {
-  flex-direction: column;
-  width: 100%;
+@import "../../styles/theme.less";
+
+@user-box: 150px;
+@prefix: user;
+
+.@{prefix} {
+  position: relative;
+  &-bg {
+    .theme-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+  }
+  &-user {
+    position: relative;
+    z-index: 100;
+    .padding(40px);
+    .flex(center, flex-start, row);
+
+    &-image {
+      width: @user-box;
+      height: @user-box;
+      border-radius: 15px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      .margin(15px, r);
+    }
+
+    &-detail {
+      height: @user-box;
+      display: flex;
+      flex-direction: column;
+      color: #ffffff;
+      &-name {
+        font-size: 40px;
+      }
+      &-phone {
+        font-size: 25px;
+      }
+    }
+  }
+  &-button {
+    
+  }
 }

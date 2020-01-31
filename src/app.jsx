@@ -21,8 +21,12 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/publish/publish',
+      'pages/publish/index',
       'pages/user/user',
       'pages/sign/login',
+      'pages/collect/collect',
+      'pages/order/order',
+      'pages/product/product',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -41,7 +45,7 @@ class App extends Component {
         selectedIconPath: "./assets/tab-bar/icon_nav_home_xuan.png",
         text: "首页"
       }, {
-        pagePath: "pages/publish/publish",
+        pagePath: "pages/publish/index",
         iconPath: "./assets/tab-bar/icon_reportforms.png",
         selectedIconPath: "./assets/tab-bar/icon_reportforms_xuan.png",
         text: "发布"

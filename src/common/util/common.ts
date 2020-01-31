@@ -1,8 +1,21 @@
 import dayJs from 'dayjs';
 
+export const defaultImage = 'http://net.huanmusic.com/react.png';
+
 export function dateHelper (date: number): string {
   return dayJs(date).format('YYYY-MM-DD');
 }
+
+
+/**
+ * @todo [传入条件返回格式化请求数据]
+ * @param json 
+ */
+export const jsonToQueryString = (json) => {
+  return '?' + Object.keys(json).map(function(key) {
+    return key + '=' + json[key];
+  }).join('&');
+};
 
 /**
  * @todo [计算一年的周]

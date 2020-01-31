@@ -1,9 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { connect } from '@tarojs/redux';
 import './index.less'
 import Header from './components/Header';
 import MySwiper from './components/Swiper';
-import Menu from './components/Menu';
+import Menu from '../../component/menu/Menu';
 import ProductAction from '../../actions/product';
 import MyList from './components/List';
 
@@ -18,17 +19,18 @@ class Index extends Component {
   componentDidShow () {
     offset = 0;
     ProductAction.productTypes();
-    ProductAction.productHomeList({offset: 0});
+    ProductAction.productHomeList({offset});
   }
 
   render () {
-    console.log('this.props:', this.props);
     return (
       <View className='index container container-color'>
         <View className='index-bg'>
           <Header />
           <MySwiper />
-          <Menu />
+          <Menu 
+            menus={this.props.menus} 
+          />
         </View>
         <MyList />
       </View>
@@ -36,4 +38,8 @@ class Index extends Component {
   }
 }
 
-export default Index
+const select = (state) => ({
+  menus: state.product.productTypes
+})
+
+export default connect(select)(Index)

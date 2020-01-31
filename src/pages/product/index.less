@@ -1,0 +1,55 @@
+@import "../../styles/theme.less";
+
+@prefix: product;
+@footer-height: 120px;
+
+.@{prefix} {
+
+  .padding(@footer-height + 20px, b);
+
+  &-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    &-content {
+      background-color: #ffffff;
+      height: @footer-height;
+      width: 100%;
+      .flex(center, flex-start, row);
+      position: relative;
+
+      &-right {
+        position: absolute;
+        top: 50%;
+        right: 30px;
+        transform: translateY(-50%);
+      }
+
+      &-item {
+        .flex(center, center, column);
+        .margin(40px, l);
+        &-icon {
+          width: 40px;
+          height: 40px;
+          .margin(10px, b);
+        }
+        &-title {
+          font-size: 24px;
+          color: #828E99;
+        }
+      }
+    }
+
+    &-button {
+      width: 280px;
+      height: 90px;
+      .theme-background;
+      border-radius: 45px;
+      .flex(center, center);
+      color: #ffffff;
+      font-size: 30px;
+    }
+  }
+}

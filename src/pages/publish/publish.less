@@ -3,8 +3,18 @@
 @prefix: publish;
 
 .@{prefix} {
-  &-images {
+  position: relative;
+  .padding(10px, t);
+  &-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    .theme-background;
+  }
 
+  &-images {
     &-image {
       width: 150px;
       height: 150px;
@@ -33,5 +43,11 @@
     border: 0px !important;
     width: 600px;
     background: linear-gradient(90deg,rgba(240,80,101,1) 0%,rgba(253,167,92,1) 100%);
+
+    &-pub {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+    }
   }
 }

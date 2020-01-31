@@ -2,7 +2,7 @@
  * @Author: Ghan 
  * @Date: 2019-10-30 11:33:11 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-01-27 22:48:33
+ * @Last Modified time: 2020-01-29 13:56:24
  */
 
 // 主色调
@@ -46,6 +46,18 @@
 .small-text {
   font-size: @small-text-fontsize;
   color: @small-text-color;
+}
+
+.theme-button {
+  .margin(20px, lr) !important;
+  .theme-background !important;
+  border: 0px !important;
+  .margin(30px, t) !important;
+  color: #ffffff !important;
+}
+
+.theme-background {
+  background: linear-gradient(90deg,rgba(240,80,101,1) 0%,rgba(253,167,92,1) 100%);
 }
 
 .border1px {

@@ -9,10 +9,20 @@ const prefix = 'component-product';
 
 class Product extends Taro.Component {
 
+  onClick () {
+    const { product } = this.props;
+    Taro.navigateTo({
+      url: `/pages/product/product?id=${product.id}`
+    })
+  }
+
   render () {
     const { product } = this.props;
     return (
-      <View className={`${prefix}`}>
+      <View 
+        className={`${prefix}`}
+        onClick={() => this.onClick()}
+      >
         <View
           className={`${prefix}-image`}
           style="background-image: url('https://img14.360buyimg.com/babel/s700x360_jfs/t1/4099/12/2578/101668/5b971b4bE65ae279d/89dd1764797acfd9.jpg')"
@@ -20,11 +30,11 @@ class Product extends Taro.Component {
         <View className={`${prefix}-detail`}>
           <View className={`${prefix}-detail-title`}>{product.title}</View>
           <View className={`${prefix}-detail-box`}>
-            <View className={`${prefix}-detail-box-price`}>{numeral(product.amount || 0).format('0.00')}元</View>
+            <View className={`${prefix}-detail-box-price`}>{numeral(product && product.amount || 0).format('0.00')}元</View>
             <View className={`${prefix}-detail-box-view`}>{product.viewing_count || 0}人浏览</View>
           </View>
         </View>
-        {product.userinfo && (
+        {product && product.userinfo && (
           <View className={`${prefix}-user`}>
             {product.userinfo && product.userinfo.avator ? (
               <View 

@@ -2,7 +2,7 @@
  * @Author: Ghan 
  * @Date: 2019-11-01 10:07:05 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-01-28 23:33:47
+ * @Last Modified time: 2020-01-29 13:59:54
  */
 import Taro from '@tarojs/taro';
 import { View, Image, Text, Input } from '@tarojs/components';
@@ -138,7 +138,6 @@ class Login extends Taro.Component {
           </View>
           <AtButton 
             type='primary' 
-            className='theme-button' 
             disabled={this.getDisabled()}
             onClick={this.onLogin}
           >
