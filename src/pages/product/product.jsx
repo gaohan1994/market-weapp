@@ -1,7 +1,6 @@
 import Taro from '@tarojs/taro';
 import invariant from 'invariant';
 import { View, Image } from '@tarojs/components';
-import { AtButton } from 'taro-ui';
 import numeral from 'numeral';
 import dayJs from 'dayjs';
 import { connect } from '@tarojs/redux';
@@ -11,6 +10,7 @@ import BaseItem from '../../component/item/BaseItem';
 import { defaultImage } from '../../common/util/common';
 import MyRow from '../../component/row/index';
 import "./index.less";
+import loginManager from '../../common/util/login.manager';
 
 const prefix = 'product';
 
@@ -18,6 +18,10 @@ class ProductDetail extends Taro.Component {
 
   defaultProps = {
     productDetail: {}
+  }
+
+  state = {
+    userinfo: {}
   }
 
   config = {
@@ -33,6 +37,57 @@ class ProductDetail extends Taro.Component {
       const { id } = this.$router.params;  
       invariant(!!id, '请传入商品id');
       this.fetchData(id);
+      const userinfo = loginManager.getUserinfo();
+      if (userinfo.success) {
+        this.setState({ userinfo: userinfo.result });
+      }
+
+    } catch (error) {
+      Taro.showToast({
+        title: error.message,
+        icon: 'none'
+      });
+    }
+  }
+
+  async onItemClick (item) {
+    const { userinfo } = this.state;
+    const { productDetail } = this.props;
+    if (!userinfo.user_id) {
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 1000
+      });
+      setTimeout(() => {
+        Taro.navigateTo({
+          url: '/pages/sign/login'
+        });
+      }, 1000);
+      return;
+    }
+    try {
+      if (item.key === 2) {
+        
+        if (productDetail && productDetail.collect && productDetail.collect.collect) {
+          //取消收藏
+          const result = await productAction.collectCancel({id: productDetail.collect.id});
+          invariant(result.code === ResponseCode.success, result.msg || ' ');
+          Taro.showToast({title: '取消收藏'});
+          setTimeout(() => {
+            this.fetchData(productDetail.id);  
+          }, 1000);
+          return;
+        }
+        // 收藏
+        const result = await productAction.collectAdd({user_id: userinfo.user_id, item_id: productDetail.id});
+        invariant(result.code === ResponseCode.success, result.msg || ' ');
+        Taro.showToast({title: '收藏成功！'});
+        setTimeout(() => {
+          this.fetchData(productDetail.id);
+        }, 1000);
+        return;
+      }
     } catch (error) {
       Taro.showToast({
         title: error.message,
@@ -117,9 +172,10 @@ class ProductDetail extends Taro.Component {
   }
 
   setFooter () {
+    const { productDetail } = this.props;
     const items = [
       {key: 1, title: '留言', icon: ''},
-      {key: 2, title: '收藏', icon: ''},
+      {key: 2, title: productDetail && productDetail.collect && productDetail.collect.collect ? '取消收藏' : '收藏', icon: ''},
     ];
     return (
       <View className={`${prefix}-footer`}>
@@ -130,6 +186,7 @@ class ProductDetail extends Taro.Component {
                 <View
                   key={item.key}
                   className={`${prefix}-footer-content-item`}
+                  onClick={() => this.onItemClick(item)}
                 >
                   <Image 
                     src={defaultImage}
