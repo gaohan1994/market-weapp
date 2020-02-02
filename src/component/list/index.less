@@ -1,0 +1,24 @@
+@import '../../styles/theme.less';
+
+@prefix: empty-component;
+
+.@{prefix} {
+  width: 100%;
+  .padding(50px, tb);
+  .flex(center, center, column);
+
+  &-image {
+    width: 580px;
+    height: 157px;
+  }
+
+  &-text {
+    .margin(20px, t);
+    font-size: 28px;
+    color: #999999;
+  }
+  &-nomore {
+    font-size: 24px;
+    color: #999999;
+  }
+}

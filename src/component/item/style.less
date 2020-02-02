@@ -4,6 +4,7 @@
 @item-pad: 20px;
 @item-avator: 100px;
 @item-product-image: @item-avator * 2.6;
+@message-avator: 50px;
 
 .bg {
   background-repeat: no-repeat;
@@ -153,6 +154,78 @@
         font-size: 24px;
         .flex(center, center);
         .margin(@item-pad, l);
+      }
+    }
+  }
+
+  &-message {
+    display: flex;
+    flex-direction: column;
+    .padding(30px);
+    position: relative;
+    &::after {
+      .border1px;
+    }
+    &-user {
+      .flex(center, flex-start, row);
+      &-name {
+        font-size: 24px;
+        color: #2B2F33;
+      }
+      &-time {
+        font-size: 22px;
+        color: #CCCCCC;
+        .margin(30px, l);
+      }
+      &-avator {
+        width: @message-avator;
+        height: @message-avator;
+        border-radius: 10px;
+        .bg;     
+        .margin(@item-pad, r);
+      }
+    }
+    &-detail {
+      .padding(@message-avator + @item-pad, l);
+      .margin(@item-pad, t);
+      display: flex;
+      flex-direction: column;
+      &-content {
+        font-size: 24px;
+        color: #2B2F33;
+      }
+    }
+
+    &-sub {
+      width: 620px;
+      .margin(@item-pad, t);
+      .margin(@message-avator + @item-pad, l);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #F2F2F2;
+      &-item {
+        .padding(@item-pad);
+        display: flex;
+        flex-direction: column;
+        font-size: 24px;
+        color: #2B2F33;
+        &-user {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+        }
+        &-reply {
+          color: @theme-color;
+          display: inline-block;
+        }
+        &-time {
+          font-size: 22px;
+          color: #CCCCCC;
+          .margin(@item-pad, l);
+        }
+        &-content {
+          .margin(@item-pad, t);
+        }
       }
     }
   }

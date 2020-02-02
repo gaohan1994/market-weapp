@@ -1,0 +1,41 @@
+
+@import "../../../styles/theme.less";
+
+@prefix: comment-component;
+
+.@{prefix} {
+
+  &-header {
+    .flex(center, flex-start, row);
+    position: relative;
+    &::after {
+      .border1px;
+    }
+    &-avator {
+      width: 80px;
+      height: 80px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      .margin(20px, r);
+    }
+    &-name {
+      font-size: 30px;
+    }
+  }
+  &-content {
+    position: relative;
+    .padding(20px, t);
+    &-input {
+      width: 100%;
+      font-size: 26px;
+      color: #333333;
+      height: 50px;
+      display: flex;
+      &-place {
+        font-size: 26px !important;
+        color: #cccccc !important;
+      }
+    }
+  }
+}

@@ -27,6 +27,7 @@ class App extends Component {
       'pages/collect/collect',
       'pages/order/order',
       'pages/product/product',
+      'pages/search/search',
     ],
     window: {
       backgroundTextStyle: 'light',

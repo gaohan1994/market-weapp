@@ -23,6 +23,7 @@ class Index extends Component {
   }
 
   render () {
+    const { productList, productListTotal } = this.props;
     return (
       <View className='index container container-color'>
         <View className='index-bg'>
@@ -32,14 +33,19 @@ class Index extends Component {
             menus={this.props.menus} 
           />
         </View>
-        <MyList />
+        <MyList 
+          productList={productList}
+          productListTotal={productListTotal}
+        />
       </View>
     )
   }
 }
 
 const select = (state) => ({
-  menus: state.product.productTypes
+  menus: state.product.productTypes,
+  productList: state.product.productList,
+  productListTotal: state.product.productListTotal,
 })
 
 export default connect(select)(Index)

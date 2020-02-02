@@ -5,8 +5,10 @@ const INITIAL_STATE = {
   productTypes: [],
   productList: [],
   productDetail: {},
+  messageList: [],
+  messageTotal: 0,
   productListTotal: 0,
-
+  searchList: [],
   collectList: [],
   collectTotal: 0,
 
@@ -17,6 +19,29 @@ const INITIAL_STATE = {
 export default function product (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+
+    case constants.RECEIVE_SEARCH_LIST: {
+      const { payload } = action;
+      return {
+        ...state,
+        searchList: payload
+      };
+    }
+
+    case constants.RECEIVE_MESSAGE_LIST: {
+      const { payload } = action;
+      const { count, rows, field = {} } = payload;
+      const { offset = 0 } = field;
+      const nextList = 
+        offset === 0 
+        ? rows
+        : merge([], state.messageList).concat(rows);
+      return {
+        ...state,
+        messageTotal: count,
+        messageList: nextList
+      };
+    }
 
     case constants.RECEIVE_PRODUCT_DETAIL: {
       const { payload } = action;

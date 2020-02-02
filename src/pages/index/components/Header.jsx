@@ -11,18 +11,24 @@ class Header extends Taro.Component {
 
   onSearch = () => {
     console.log('onSearch:');
+    Taro.navigateTo({
+      url: '/pages/search/search'
+    });
   }
 
   render () {
     return (
-      <View className={`${prefix}`}>
+      <View 
+        className={`${prefix}`}
+        onClick={this.onSearch}
+      >
         <View className={`${prefix}-box`}>
           <View style='color: #666666;'>医用口罩</View>
         </View>
 
         <View
           className={`${prefix}-icon`}
-          onClick={this.onSearch}
+          // onClick={this.onSearch}
         >
           <AtIcon 
             value='search' 

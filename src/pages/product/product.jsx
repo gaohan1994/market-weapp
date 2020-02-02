@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro';
 import invariant from 'invariant';
 import { View, Image } from '@tarojs/components';
 import numeral from 'numeral';
+import { AtLoadMore } from 'taro-ui';
 import dayJs from 'dayjs';
 import { connect } from '@tarojs/redux';
 import productAction from '../../actions/product';
@@ -11,7 +12,11 @@ import { defaultImage } from '../../common/util/common';
 import MyRow from '../../component/row/index';
 import "./index.less";
 import loginManager from '../../common/util/login.manager';
+import Comment from './component/comment';
+import MessageItem from '../../component/item/MessageItem';
+import ListEmpty from '../../component/list/empty';
 
+let offset = 0;
 const prefix = 'product';
 
 class ProductDetail extends Taro.Component {
@@ -21,7 +26,10 @@ class ProductDetail extends Taro.Component {
   }
 
   state = {
-    userinfo: {}
+    messageLoading: false,
+    userinfo: {},
+    showComment: false,
+    parentMessage: {},
   }
 
   config = {
@@ -32,16 +40,32 @@ class ProductDetail extends Taro.Component {
     this.init();
   }
 
+  showCommentHandle () {
+    this.setState({ showComment: true });
+  }
+
+  async messageCallback () {
+    console.log('messageCallback');
+    this.messageList(0);
+  }
+
+  hideCommentHandle () {
+    this.setState({ 
+      showComment: false,
+      parentMessage: {}
+    });
+  }
+
   async init () {
     try {
       const { id } = this.$router.params;  
       invariant(!!id, '请传入商品id');
-      this.fetchData(id);
       const userinfo = loginManager.getUserinfo();
       if (userinfo.success) {
         this.setState({ userinfo: userinfo.result });
       }
-
+      this.messageList(0);
+      this.fetchData(id);
     } catch (error) {
       Taro.showToast({
         title: error.message,
@@ -67,6 +91,10 @@ class ProductDetail extends Taro.Component {
       return;
     }
     try {
+      if (item.key === 1) {
+        this.showCommentHandle();
+        return;
+      }
       if (item.key === 2) {
         
         if (productDetail && productDetail.collect && productDetail.collect.collect) {
@@ -109,6 +137,38 @@ class ProductDetail extends Taro.Component {
         icon: 'none'
       });
     }
+  }
+
+  async messageList (page) {
+    try {
+      const { id } = this.$router.params;
+      this.setState({messageLoading: true});
+      const result = await productAction.messageList({
+        item_id: id,
+        offset: typeof page === 'number' ? page : offset
+      });
+      invariant(result.code === ResponseCode.success, result.msg || ' ');
+      this.setState({messageLoading: false});
+      if (typeof page === 'number') {
+        offset = page;
+      } else {
+        offset = offset + 1;
+      }
+    } catch (error) {
+      this.setState({messageLoading: false});
+      Taro.showToast({
+        title: error.message,
+        icon: 'none'
+      });
+    }
+  }
+
+  onMessageClick = (message) => {
+    console.log('message: ', message);
+    this.setState({
+      parentMessage: message,
+      showComment: true,
+    });
   }
 
   setSeller () {
@@ -164,10 +224,17 @@ class ProductDetail extends Taro.Component {
   }
 
   setMessage () {
+    const { userinfo, showComment, parentMessage } = this.state;
+    const { productDetail } = this.props;
     return (
-      <View>
-        empty
-      </View>
+      <Comment
+        product={productDetail}
+        userinfo={userinfo}
+        isOpened={showComment}
+        parentMessage={parentMessage}
+        onCancel={() => this.hideCommentHandle()}     
+        callback={() => this.messageCallback()}        
+      />
     );
   }
 
@@ -211,11 +278,37 @@ class ProductDetail extends Taro.Component {
   }
 
   render () {
+    const { messageLoading } = this.state;
+    const { messageList, messageTotal } = this.props;
+    const status = messageList.length >= messageTotal 
+      ? 'noMore'
+      : messageLoading ? 'loading' : 'more';
     return (
       <View className={`${prefix}`}>
         {this.setSeller()}
         {this.setArticle()}
         <MyRow title='留言板' />
+        <View className={`${prefix}-message`}>
+          {messageTotal === 0 && (
+            <ListEmpty />
+          )}
+          {messageList && messageList.map((item) => {
+            return (
+              <MessageItem
+                key={item.id}
+                message={item}
+                onClick={() => this.onMessageClick(item)}
+              />
+            )
+          })}
+          {messageTotal > 0 && (
+            <AtLoadMore
+              onClick={() => this.messageList()}
+              status={status}
+              noMoreText='我也是有底线的'
+            />
+          )}
+        </View>
         {this.setMessage()}
         {this.setFooter()}
       </View>
@@ -225,7 +318,9 @@ class ProductDetail extends Taro.Component {
 
 const select = (state) => {
   return {
-    productDetail: state.product.productDetail
+    productDetail: state.product.productDetail,
+    messageList: state.product.messageList,
+    messageTotal: state.product.messageTotal,
   };
 }
 

@@ -7,6 +7,49 @@ import loginManager from "../common/util/login.manager";
 
 class ProductAction {
 
+  sendMessage = async (
+    product,
+    userinfo,
+    content,
+    parentMessage,
+  ) => {
+    /**
+     * @todo 组成基本参数
+     */
+    let payload = {
+      item_id: product.id,
+      user_id: userinfo.user_id,
+      content
+    };
+
+    /**
+     * @todo 如果是二级评论那么继续组成二级评论参数
+     */
+    if (parentMessage && parentMessage.id) {
+      payload = {
+        ...payload,
+        parent_id: parentMessage.id,
+        reply_id: parentMessage.user_id
+      };
+    }
+    const result = await requestHttp.post('/message/add', payload);
+    return result;
+  }
+
+  messageList = async (params) => {
+    const result = await requestHttp.get(`/message/list${jsonToQueryString(params)}`);
+    if (result.code === ResponseCode.success) {
+      store.dispatch({
+        type: constants.RECEIVE_MESSAGE_LIST,
+        payload: {
+          ...result.data,
+          params
+        }
+      });
+    }
+    return result;
+  }
+
   orderCancel = async (params) => {
     const result = await requestHttp.post(`/order/cancel`, params);
     return result;
@@ -53,6 +96,24 @@ class ProductAction {
       });
     }
     return result;
+  }
+
+  productSearch = async (params) => {
+    const result = await requestHttp.get(`/product/search${jsonToQueryString(params)}`);
+    if (result.code === ResponseCode.success) {
+      store.dispatch({
+        type: constants.RECEIVE_SEARCH_LIST,
+        payload: result.data
+      });
+    }
+    return result;
+  }
+
+  productSearchEmpty = async () => {
+    store.dispatch({
+      type: constants.RECEIVE_SEARCH_LIST,
+      payload: []
+    });
   }
 
   productTypes = async () => {

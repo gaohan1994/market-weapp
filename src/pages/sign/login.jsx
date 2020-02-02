@@ -2,7 +2,7 @@
  * @Author: Ghan 
  * @Date: 2019-11-01 10:07:05 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-01-29 13:59:54
+ * @Last Modified time: 2020-02-02 11:40:13
  */
 import Taro from '@tarojs/taro';
 import { View, Image, Text, Input } from '@tarojs/components';
@@ -57,6 +57,15 @@ class Login extends Taro.Component {
   getDisabled = () => {
     return false;
   }
+
+  wxLogin = async () => {
+    Taro.login({
+      success: (result) => {
+        console.log('result: ', result);
+      }
+    })
+  }
+
   onLogin = async () => {
     try {
       Taro.showLoading();
@@ -140,6 +149,7 @@ class Login extends Taro.Component {
             type='primary' 
             disabled={this.getDisabled()}
             onClick={this.onLogin}
+            // onClick={this.wxLogin}
           >
             登录
           </AtButton>
