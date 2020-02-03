@@ -15,22 +15,18 @@
   }
 
   &-images {
-    &-image {
-      width: 150px;
-      height: 150px;
-      .margin(23px, l);
-      .margin(23px, t);
-      border-radius: 10px;
-      background-repeat: no-repeat;  
-      background-size: cover;
-      background-position: center center;
-      position: relative;
-      &-close {
-        position: absolute;
-        left: 0;
-        top: 0;
-
-      }
+    background-color: #ffffff;
+    position: relative;
+    &-tip {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 28px;
+      color: #C6C6C6;
+    }
+    &::after {
+      .border1px;
     }
   }
 

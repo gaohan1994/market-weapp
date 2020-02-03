@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { AtIcon } from 'taro-ui';
 import numeral from 'numeral';
+import { defaultImage } from '../common/util/common';
 import "./index.less";
 
 const prefix = 'component-product';
@@ -18,6 +19,11 @@ class Product extends Taro.Component {
 
   render () {
     const { product } = this.props;
+
+    const cover = product && product.pics && product.pics.length > 0
+      ? product.pics.split(',')[0]
+      : defaultImage;
+
     return (
       <View 
         className={`${prefix}`}
@@ -25,7 +31,7 @@ class Product extends Taro.Component {
       >
         <View
           className={`${prefix}-image`}
-          style="background-image: url('https://img14.360buyimg.com/babel/s700x360_jfs/t1/4099/12/2578/101668/5b971b4bE65ae279d/89dd1764797acfd9.jpg')"
+          style={`background-image: url(${cover})`}
         />
         <View className={`${prefix}-detail`}>
           <View className={`${prefix}-detail-title`}>{product.title}</View>

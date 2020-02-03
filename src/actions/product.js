@@ -1,11 +1,46 @@
+import Taro from '@tarojs/taro';
 import requestHttp from "../common/request/request.http";
 import { ResponseCode } from "../common/request/config";
 import constants from '../constants';
 import { store } from "../app";
 import { jsonToQueryString } from "../common/util/common";
 import loginManager from "../common/util/login.manager";
+import getBaseUrl from '../common/request/base.url';
 
 class ProductAction {
+
+  uploadImages = async (files) => {
+    const promises = [];
+    for (let i = 0; i < files.length; i++) {
+
+      const file = files[i];
+      const promise = new Promise((resolve) => {
+        Taro.uploadFile({
+          url: `${getBaseUrl('')}/upload/image`,
+          filePath: file.url,
+          name: 'image',
+        })
+        .then(res => {
+          const data = JSON.parse(res.data);
+          if (data.code === ResponseCode.success) {
+            resolve(data.data);
+          } else {
+            throw new Error(data.msg || '上传图片失败');
+          }
+        })
+        .catch(error => {
+          resolve(error.message);
+        })
+      });
+      promises.push(promise);
+    }
+    return new Promise((resolve) => {
+      Promise.all(promises)
+      .then(result => {
+        resolve(result);
+      });
+    })
+  }
 
   sendMessage = async (
     product,

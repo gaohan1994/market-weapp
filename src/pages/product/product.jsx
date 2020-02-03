@@ -186,6 +186,11 @@ class ProductDetail extends Taro.Component {
 
   setArticle () {
     const { productDetail } = this.props;
+
+    const images = productDetail.pics && productDetail.pics !== []
+      ? productDetail.pics.split(',')
+      : [];
+
     return (
       <View className='at-article'>
         <View className='at-article__h1'>
@@ -196,7 +201,7 @@ class ProductDetail extends Taro.Component {
             <View className='at-article__p'>
               {productDetail.description}
             </View>
-            {productDetail.pics && productDetail.pics.map((pic, index) => {
+            {images.length > 0 && images.map((pic, index) => {
               return (
                 <Image
                   key={`p${index}`} 
@@ -206,17 +211,6 @@ class ProductDetail extends Taro.Component {
                 />
               )
             })}
-            <View className='at-article__p'>
-              这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本落。这是文本段落。1234567890123456789012345678901234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ
-            </View>
-            <View className='at-article__p'>
-              这是文本段落。这是文本段落。
-            </View>
-            <Image 
-              className='at-article__img' 
-              src='https://jdc.jd.com/img/400x400' 
-              mode='widthFix'
-            />
           </View>
         </View>
       </View>

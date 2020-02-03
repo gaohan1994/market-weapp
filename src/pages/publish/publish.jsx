@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtInput, AtTextarea, AtButton } from 'taro-ui';
+import { AtInput, AtTextarea, AtButton, AtImagePicker, AtMessage } from 'taro-ui';
 import invariant from 'invariant';
 import './publish.less'
 import productAction from '../../actions/product';
@@ -18,6 +18,7 @@ class Publish extends Component {
     typeValue: 0,
     amount: '',
     trans_type: '0',
+    files: [],
   }
 
   async componentDidShow () {
@@ -41,6 +42,21 @@ class Publish extends Component {
     });
   }
 
+  onChange (files) {
+    console.log('files: ', files);
+    this.setState({files})
+  }
+  onFail (mes) {
+    console.log('mes: ', mes);
+    Taro.atMessage({
+      'message': `${mes.message}`,
+      'type': 'error',
+    });
+  }
+  onImageClick (index, file) {
+    console.log(index, file)
+  }
+
   changeSelector = (e) => {
     this.setState({typeValue: e.detail.value});
   }
@@ -52,6 +68,7 @@ class Publish extends Component {
       typeValue: 0,
       amount: '',
       trans_type: '0',
+      files: [],
     });
   }
 
@@ -62,38 +79,40 @@ class Publish extends Component {
         description,
         typeValue,
         amount,
-        trans_type
+        trans_type,
+        files,
       } = this.state;
       const { productTypes } = this.props;
       invariant(!!title, '请输入宝贝标题');
       invariant(!!description, '请输入宝贝详情');
       invariant(!!amount, '请输入宝贝价格');
-
+      invariant(files.length > 0, '请上传宝贝图片');
+      Taro.showLoading({ title: '上传图片中~', mask: true });
+      const pics = await productAction.uploadImages(files);
       const currentType = productTypes[typeValue];
 
       const userinfo = loginManager.getUserinfo();
-      console.log('userinfo: ', userinfo);
       const payload = {
         title,
         description,
         amount,
         type: currentType.id,
-        pics: [],
+        pics: pics.join(','),
         user_id: userinfo.result.user_id,
         trans_type: Number(trans_type),
       };
-      // console.log('payload: ', payload);
       const result = await productAction.productAdd(payload);
-      // console.log('result: ', result);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
+      Taro.hideLoading();
       Taro.showToast({ title: '发布宝贝成功！', duration: 1000 });
       this.reset();
-      setTimeout(() => {
-        Taro.navigateTo({
-          url: '/publish/result'
-        });
-      }, 1000);
+      // setTimeout(() => {
+      //   Taro.navigateTo({
+      //     url: '/publish/result'
+      //   });
+      // }, 1000);
     } catch (error) {
+      Taro.hideLoading();
       Taro.showToast({
         title: error.message,
         icon: 'none'
@@ -102,9 +121,18 @@ class Publish extends Component {
   }
 
   renderImages = () => {
+    const { files } = this.state;
     return (
       <View className={`${prefix}-images`}>
-
+        <AtImagePicker
+          multiple
+          maxLength={4}
+          files={files}
+          onChange={this.onChange.bind(this)}
+        />
+        {files.length === 0 && (
+          <View className={`${prefix}-images-tip`}>快来上传宝贝图片吧~</View>
+        )}
       </View>
     );
   }
@@ -114,6 +142,7 @@ class Publish extends Component {
     const { productTypes, productTypesSelector } = this.props;
     return (
       <View>
+        <AtMessage />
         <FormRow
           title='交易方式'
           buttons={[
