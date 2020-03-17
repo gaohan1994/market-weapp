@@ -1,6 +1,56 @@
 @import "../../styles/theme.less";
 
+.box {
+  background-color: #fff;
+  width: 690px;
+  .padding(40px, tb);
+  .margin(30px, l);
+  box-shadow:3px 15px 22px 3px rgba(107,146,244,0.05);
+  border-radius:10px;
+}
+
 @prefix: order;
 .@{prefix} {
 
+  &-status {
+    .theme-background;
+    width: 100%;
+    height: 260px;
+    .flex(center, center, row);
+    &-text {
+      color: #ffffff;
+      font-size: 36px;
+    }
+  }
+
+  &-user {
+    position: relative;
+    .box;
+    .margin(-85px, t) !important;
+    .padding(30px, lr);
+    .flex(center, flex-start, row);
+    &-text {
+      .margin(30px, l);
+      font-size: 26px;
+      color: #666666;
+    }
+    &-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg,#4096F5 0%,#4188F2 100%);
+    }
+  }
+
+  &-product {
+    .box;
+    .margin(20px, t);
+  }
+
+  &-order {
+    .box;
+    .margin(20px, t);
+  }
 }

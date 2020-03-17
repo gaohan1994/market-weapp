@@ -11,7 +11,7 @@ const prefix = 'index-component-list';
 class List extends Taro.Component {
 
   render () {
-    const { productList, productListTotal } = this.props;
+    const { productList, productListTotal, type, showMore = true } = this.props;
     return (
       <ScrollView
         className={`${prefix} container-color`}
@@ -28,15 +28,15 @@ class List extends Taro.Component {
                 className={`${prefix}-item`}
               >
                 <Product  
+                  type={type}
                   product={product}
                 />
               </View>
-              
             );
           })}
         </View>
         
-        {productListTotal !== 0 && productListTotal <= productList.length && (
+        {!!showMore && productListTotal !== 0 && productListTotal <= productList.length && (
           <ListNoMore />
         )}
       </ScrollView>

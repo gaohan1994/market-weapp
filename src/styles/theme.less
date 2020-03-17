@@ -2,7 +2,7 @@
  * @Author: Ghan 
  * @Date: 2019-10-30 11:33:11 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-01-29 13:56:24
+ * @Last Modified time: 2020-03-06 10:51:58
  */
 
 // 主色调
@@ -103,6 +103,12 @@
   justify-content: @justifyContent;
   flex-direction: @flexDirection;
 } 
+
+.bg () {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
 
 .background-image (@imageUrl) {
   background-image: ~"url(@{imageUrl})";

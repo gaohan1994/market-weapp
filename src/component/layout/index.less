@@ -1,0 +1,23 @@
+@import "../../styles/theme.less";
+
+@prefix: component-section;
+
+.@{prefix} {
+  &-header {
+    width: 100%;
+    .flex(center, space-between, row);
+    .padding(30px, lr);
+    .margin(30px, t);
+
+    &-title {
+      font-size:36px;
+      font-weight:800;
+      color:rgba(51,51,51,1);
+    }
+    &-button {
+      font-size:24px;
+      font-weight:500;
+      color:rgba(223,57,77,1);
+    }
+  }
+}

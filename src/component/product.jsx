@@ -1,28 +1,59 @@
 
 import Taro from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { AtIcon } from 'taro-ui';
+import 'dayjs/locale/zh-cn';
 import numeral from 'numeral';
+import dayJs from 'dayjs';
 import { defaultImage } from '../common/util/common';
 import "./index.less";
+
+dayJs.locale('zh-cn')
+dayJs.extend(relativeTime);
 
 const prefix = 'component-product';
 
 class Product extends Taro.Component {
 
   onClick () {
-    const { product } = this.props;
+    const { product, type = 'product' } = this.props;
     Taro.navigateTo({
-      url: `/pages/product/product?id=${product.id}`
+      url: `/pages/${type}/${type}?id=${product.id}`
     })
   }
 
-  render () {
+  renderUser = () => {
     const { product } = this.props;
+    return (
+      <View className={`${prefix}-topic-user`}>
+        <View 
+          className={`${prefix}-user-avator`}
+          style="background-image: url('')"
+        />
+        <View className={`${prefix}-topic-user-box`}>
+          <Text className={`${prefix}-topic-user-box-name`}>{product.userinfo && product.userinfo.username}</Text> 
+          <Text className={`${prefix}-topic-user-box-tip`}>{dayJs(product && product.create_time).fromNow()}</Text> 
+        </View>
+      </View>
+    )
+  }
+
+  render () {
+    const { product, type } = this.props;
 
     const cover = product && product.pics && product.pics.length > 0
       ? product.pics.split(',')[0]
       : defaultImage;
+
+    if (type === 'topic') {
+      return (
+        <View className={`${prefix}-topic`}>
+          {this.renderUser()}
+        </View>
+      );
+    }
+
 
     return (
       <View 

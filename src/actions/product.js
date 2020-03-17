@@ -9,6 +9,13 @@ import getBaseUrl from '../common/request/base.url';
 
 class ProductAction {
 
+  cartProduct = async (product) => {
+    await store.dispatch({
+      type: constants.RECEIVE_CART_PRODUCT,
+      payload: product
+    });
+  }
+
   uploadImages = async (files) => {
     const promises = [];
     for (let i = 0; i < files.length; i++) {
@@ -85,8 +92,39 @@ class ProductAction {
     return result;
   }
 
+  createOrder = async (product) => {
+    const userinfo = loginManager.getUserinfo();
+    if (!userinfo.success) {
+      return { code: ResponseCode.error, msg: '请先登录' };
+    }
+    if (!product) {
+      return { code: ResponseCode.error, msg: '非法商品' };
+    }
+
+    const payload = {
+      user_id: userinfo.result.user_id,
+      product_id: product.id,
+      random_key: Math.round(new Date() / 1000)
+    };
+    console.log('payload: ', payload);
+    const result = await requestHttp.post('/order/create', payload);
+    console.log('result', result);
+    return result;
+  }
+
   orderCancel = async (params) => {
     const result = await requestHttp.post(`/order/cancel`, params);
+    return result;
+  }
+
+  orderDetail = async (params) => {
+    const result = await requestHttp.get(`/order/detail${jsonToQueryString(params)}`);
+    if (result.code === ResponseCode.success) {
+      store.dispatch({
+        type: constants.RECEIVE_ORDER_DETAIL,
+        payload: result.data
+      });
+    }
     return result;
   }
 
@@ -149,6 +187,17 @@ class ProductAction {
       type: constants.RECEIVE_SEARCH_LIST,
       payload: []
     });
+  }
+
+  productListRandom = async () => {
+    const result = await requestHttp.get('/product/random');
+    if (result.code === ResponseCode.success) {
+      store.dispatch({
+        type: constants.RECEIVE_PRODUCT_RANDOM,
+        payload: result.data
+      })
+    }
+    return result;
   }
 
   productTypes = async () => {

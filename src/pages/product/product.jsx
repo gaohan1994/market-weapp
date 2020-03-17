@@ -74,6 +74,14 @@ class ProductDetail extends Taro.Component {
     }
   }
 
+  async onCart () {
+    const { productDetail } = this.props;
+    await productAction.cartProduct(productDetail);
+    Taro.navigateTo({
+      url: '/pages/pay/cart'
+    });
+  }
+
   async onItemClick (item) {
     const { userinfo } = this.state;
     const { productDetail } = this.props;
@@ -262,6 +270,7 @@ class ProductDetail extends Taro.Component {
             <View
               type='primary'
               className={`${prefix}-footer-button`}
+              onClick={() => this.onCart()}
             >
               我想要
             </View>

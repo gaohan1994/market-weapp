@@ -26,8 +26,12 @@ class App extends Component {
       'pages/sign/login',
       'pages/collect/collect',
       'pages/order/order',
+      'pages/order/order.detail',
       'pages/product/product',
       'pages/search/search',
+      'pages/pay/cart',
+      'pages/product/product.list',
+      'pages/topic/topic.main'
     ],
     window: {
       backgroundTextStyle: 'light',

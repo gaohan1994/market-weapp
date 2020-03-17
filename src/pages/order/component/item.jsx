@@ -33,6 +33,12 @@ class OrderItem extends Taro.Component {
     }
   }
 
+  navOrder (order_no) {
+    Taro.navigateTo({
+      url: `/pages/order/order.detail?order_no=${order_no}`
+    })
+  }
+
   setOrderStatus () {
     const { order, userinfo } = this.props;
     /**
@@ -88,13 +94,15 @@ class OrderItem extends Taro.Component {
     return (
       <BaseItem
         title={`订单号：${order.order_no}`}
+        headerClick={() => this.navOrder(order.order_no)}
+        contentClick={() => this.navOrder(order.order_no)}
         pad
         mater={this.setOrderStatus()} 
         type='image'
         contentTitle={order.product_name}
         contentDetail='共1件商品 合计：'
         contentMater={numeral(order.pay_amount || 0).format('0.00')}
-        image={order.product_picture && order.product_picture[0] || defaultImage}
+        image={order.product_picture && order.product_picture.split(',')[0] || defaultImage}
         buttons={buttons}
       />
     );

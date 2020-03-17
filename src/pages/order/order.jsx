@@ -17,6 +17,10 @@ class Order extends Taro.Component {
     userinfo: {}
   }
 
+  config = {
+    navigationBarTitleText: '订单列表'
+  }
+
   componentDidShow () {
     const userinfo = loginManager.getUserinfo();
     offset = 0;

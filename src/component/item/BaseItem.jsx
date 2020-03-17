@@ -8,11 +8,19 @@ const prefix = 'base-item';
 
 class BaseItem extends Taro.Component {
 
+  defaultProps = {
+    headerClick: undefined,
+    contentClick: undefined,
+  }
+
   renderHeader () {
-    const { avator, title, subTitle, mater } = this.props;
+    const { avator, title, subTitle, mater, headerClick } = this.props;
     return (
-      <View className={`${prefix}-header`}>
-        {avator && (
+      <View 
+        className={`${prefix}-header`}
+        onClick={headerClick}
+      >
+        {!!avator && (
           <View 
             className={`${prefix}-header-image`} 
             style={`background-image: url(${avator})`}
@@ -20,11 +28,11 @@ class BaseItem extends Taro.Component {
         )}
         <View className={`${prefix}-header-user`}>
           <View className={`${prefix}-header-user-name`} >{title}</View>
-          {subTitle && (
+          {!!subTitle && (
             <View className={`${prefix}-header-user-desc`} >{subTitle}</View>
           )}
         </View>
-        {mater && (
+        {!!mater && (
           <View className={`${prefix}-header-price`}>
             {mater}
           </View>
@@ -42,11 +50,14 @@ class BaseItem extends Taro.Component {
       contentTitle,
       contentDetail,
       contentMater,
+      contentClick,
     } = this.props;
-
     if (isRenderContent) {
       return (
-        <View className={`${prefix}-content`}>
+        <View 
+          className={`${prefix}-content`}
+          onClick={contentClick}
+        >
           {type === 'images' && (
             <View className={`${prefix}-content-title`}>{contentTitle}</View>
           )}

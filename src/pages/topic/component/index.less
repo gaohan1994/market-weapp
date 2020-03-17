@@ -1,0 +1,28 @@
+@import "../../../styles/theme.less";
+
+@prefix: component-topic;
+
+.@{prefix} {
+
+
+  &-types {
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    &-item {
+      height: 40px;
+      background-color: #fff;
+      border-radius: 5px;
+      border: 1px solid #e3e3e3;
+      .padding(20px, lr);
+      line-height: 1;
+      .flex(center, center);
+      font-size:22px;
+      color:rgba(102,102,102,1);
+      .margin(10px, t);
+      .margin(20px, l);
+    }
+  }
+}

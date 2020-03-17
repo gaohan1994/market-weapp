@@ -5,20 +5,46 @@ const INITIAL_STATE = {
   productTypes: [],
   productList: [],
   productDetail: {},
+  productRandom: [],
   messageList: [],
   messageTotal: 0,
   productListTotal: 0,
   searchList: [],
   collectList: [],
   collectTotal: 0,
-
   orderList: [],
   orderTotal: 0,
+  orderDetail: {},
+  cartProduct: {},
 }
 
 export default function product (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+
+    case constants.RECEIVE_ORDER_DETAIL: {
+      const { payload } = action;
+      return {
+        ...state,
+        orderDetail: payload
+      };
+    }
+
+    case constants.RECEIVE_CART_PRODUCT: {
+      const { payload } = action;
+      return {
+        ...state,
+        cartProduct: payload
+      };
+    }
+
+    case constants.RECEIVE_PRODUCT_RANDOM: {
+      const { payload } = action;
+      return {
+        ...state,
+        productRandom: payload
+      };
+    }
 
     case constants.RECEIVE_SEARCH_LIST: {
       const { payload } = action;

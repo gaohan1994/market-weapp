@@ -1,7 +1,6 @@
 
 import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import { connect } from '@tarojs/redux';
 import { AtIcon } from 'taro-ui';
 import "./index.less";
 

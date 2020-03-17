@@ -1,0 +1,88 @@
+import Taro from '@tarojs/taro';
+import { Button, View } from '@tarojs/components';
+import numeral from 'numeral';
+import invariant from 'invariant';
+import ListRow from '../../../component/row';
+import ModalBase from '../../../component/modal/modal';
+import productAction from '../../../actions/product';
+import { ResponseCode } from '../../../common/request/config';
+
+class ConfirmModal extends Taro.Component {
+
+  defaultProps = {
+    onCancel: undefined,
+    onConfirm: undefined,
+    product: {}
+  }
+
+  onCancel () {
+    const { onCancel } = this.props;
+    onCancel && onCancel();
+  }
+
+  async onConfirm () {
+    try {
+      const { onConfirm, product } = this.props;
+
+      if (onConfirm) {
+        onConfirm();
+        return;
+      }
+
+      Taro.showLoading({title: '下单中~'});
+      const result = await productAction.createOrder(product);
+      Taro.hideLoading();
+      invariant(result.code === ResponseCode.success, result.msg || ' ');
+
+      this.onCancel();
+      Taro.showToast({title: '下单成功', duration: 1000});
+      setTimeout(() => {
+        Taro.navigateTo({
+          url: `/order/order?id=${result.data.id}`
+        });
+      }, 1000);
+    } catch (error) {
+      Taro.hideLoading();
+      Taro.showToast({
+        title: error.message,
+        icon: 'none'
+      });
+    }
+  }
+  
+  setContent () {
+    const { product } = this.props;
+    return (
+      <View>
+        <ListRow 
+          title='商品名字' 
+          extraText={product.title && product.title.length > 5 ? product.title.slice(0, 5) : product.title}
+        />
+        <ListRow 
+          title='商品价格' 
+          extraText={`￥ ${numeral(product.amount).format('0.00')}`}
+          extraTextColor='#FF7332'
+          hasBorder={false}
+        />
+      </View>
+    )
+  }
+
+  render () {
+    const { isOpened, } = this.props;
+    return (
+      <ModalBase
+        header='提示'
+        isOpened={isOpened}
+        buttons={[
+          {title: '再想想', onClick: () => this.onCancel()},
+          {title: '买买买', onClick: () => this.onConfirm()},
+        ]}
+      >
+        {this.setContent()}
+      </ModalBase>
+    );
+  }
+}
+
+export default ConfirmModal;

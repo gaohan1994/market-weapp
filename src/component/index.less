@@ -70,4 +70,26 @@
       .margin(20px, l);
     }
   }
+
+  &-topic {
+    width: 100%;
+    .margin(20px, t);
+    &-user {
+      .flex(center);
+      &-box {
+        display: flex;
+        flex-direction: column;
+        .margin(20px, l);
+
+        &-name {
+          font-size: 26px;
+          color: #FF7332;
+        }
+        &-tip {
+          font-size: 22px;
+          color: #666666;
+        }
+      }
+    }
+  }
 }

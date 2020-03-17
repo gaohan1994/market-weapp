@@ -28,7 +28,6 @@ class LoginManager {
 
   /**
    * @todo [登录]
-   *
    * @memberof LoginManager
    */
   public login = async (params: any) => {
