@@ -10,6 +10,7 @@ import TopicAction from '../../actions/topic';
 import MyList from './components/List';
 import Publish from './components/Publish';
 import SectionHeader from '../../component/layout/section';
+import weixin from '../../common/weixin/weixin';
 
 let offset = 0;
 
@@ -20,6 +21,7 @@ class Index extends Component {
   }
 
   componentDidShow () {
+    weixin.getWeixinCode();
     offset = 0;
     ProductAction.productListRandom();
     ProductAction.productTypes();
@@ -84,6 +86,7 @@ class Index extends Component {
             }}
           />
           <MyList 
+            type='topic'
             productList={topicHomeList.length > 4 ? topicHomeList.slice(0, 4) : topicHomeList}
             showMore={false}
           />

@@ -22,6 +22,7 @@ class App extends Component {
       'pages/index/index',
       'pages/publish/publish',
       'pages/publish/index',
+      'pages/publish/publish.topic',
       'pages/user/user',
       'pages/sign/login',
       'pages/collect/collect',

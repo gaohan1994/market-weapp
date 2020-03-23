@@ -9,6 +9,10 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
+  /**
+   * @todo 多端同步调试
+   * outputRoot: `dist/${process.env.TARO_ENV}`
+   */
   plugins: {
     babel: {
       sourceMap: true,

@@ -67,6 +67,17 @@ class PublishIndex extends Taro.Component {
     this.loginHandle();
   }
 
+  navTopic = () => {
+    const result = this.checkAuth();
+    if (result) {
+      Taro.navigateTo({
+        url: '/pages/publish/publish.topic'
+      });
+      return;
+    }
+    this.loginHandle();
+  }
+
   render () {
     const { userinfo } = this.state;
     const menus = [
@@ -86,6 +97,12 @@ class PublishIndex extends Taro.Component {
         >
           发布
         </View>
+        <View
+          onClick={() => this.navTopic()}
+        >
+          发布帖子
+        </View>
+        
         PublishIndex
 
         <View className={`${prefix}-button-pub`}>

@@ -10,6 +10,11 @@ import getBaseUrl from '../common/request/base.url';
 
 class TopicAction {
 
+  topicAdd = async (payload) => {
+    const result = await requestHttp.post('/topic/add', payload);
+    return result;
+  }
+
   topicList = async (field = {}) => {
     const result = await requestHttp.get(`/topic/list`);
     if (result.code === ResponseCode.success) {

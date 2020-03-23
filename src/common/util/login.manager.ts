@@ -2,7 +2,7 @@
  * @Author: Ghan 
  * @Date: 2019-11-08 17:10:29 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-01-28 23:30:48
+ * @Last Modified time: 2020-03-23 14:50:24
  */
 
 import Taro from '@tarojs/taro';
@@ -18,7 +18,7 @@ class LoginManager {
   };
 
   public autoToken = async (params): Promise<any> => {
-    const result = await requestHttp.post(this.LoginManagerConfig.url, params);
+    const result = await requestHttp.post('/user/add', params);
     if (result.code === ResponseCode.success) {
       return { success: true, result: result.data };
     } else {
@@ -31,11 +31,7 @@ class LoginManager {
    * @memberof LoginManager
    */
   public login = async (params: any) => {
-    const payload = {
-      ...params,
-      password: params.password,
-    };
-    const { success, result } = await this.autoToken(payload);
+    const { success, result } = await this.autoToken(params);
 
     if (success === true) {
       return new Promise((resolve) => {

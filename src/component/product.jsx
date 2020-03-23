@@ -29,10 +29,10 @@ class Product extends Taro.Component {
       <View className={`${prefix}-topic-user`}>
         <View 
           className={`${prefix}-user-avator`}
-          style="background-image: url('')"
+          style={`background-image: url(${product.userinfo.avatarUrl})`}
         />
         <View className={`${prefix}-topic-user-box`}>
-          <Text className={`${prefix}-topic-user-box-name`}>{product.userinfo && product.userinfo.username}</Text> 
+          <Text className={`${prefix}-topic-user-box-name`}>{product.userinfo && product.userinfo.nickName}</Text> 
           <Text className={`${prefix}-topic-user-box-tip`}>{dayJs(product && product.create_time).fromNow()}</Text> 
         </View>
       </View>
@@ -47,9 +47,55 @@ class Product extends Taro.Component {
       : defaultImage;
 
     if (type === 'topic') {
+
+      const bars = [{
+        title: '80',
+        icon: 'heart',
+        color: '#DF394D',
+      }, {
+        title: '90',
+        icon: 'message'
+      }];
+
       return (
         <View className={`${prefix}-topic`}>
           {this.renderUser()}
+          <View className={`${prefix}-topic-content`}>
+            <View className={`${prefix}-topic-content-title`}>{product.title}</View>
+            <View className={`${prefix}-topic-content-desc`}>{product.description}</View>
+          </View>
+
+          {product.pics && product.pics.length > 0 && (
+            <View className={`${prefix}-topic-image`}>
+              {product.pics.map((img, index) => {
+                return (
+                  <View 
+                    key={`i${index}`}
+                    className={`${prefix}-topic-image-${product.pics % 3}`}
+                    style={`background-image: url(${img})`}
+                  />
+                )
+              })}
+            </View>
+          )}
+
+          <View className={`${prefix}-topic-bar`}>
+            {bars.map((bar) => {
+              return (
+                <View 
+                  className={`${prefix}-topic-bar-item`}
+                  key={bar.title}
+                >
+                  <AtIcon
+                    value={bar.icon}
+                    size='15'
+                    color={bar.color || '#666666'}
+                  />
+                  <View style='margin-left: 5px' className={`${prefix}-topic-content-desc`}> {bar.title} </View>
+                </View>
+              )
+            })}
+          </View>
         </View>
       );
     }
@@ -73,10 +119,10 @@ class Product extends Taro.Component {
         </View>
         {product && product.userinfo && (
           <View className={`${prefix}-user`}>
-            {product.userinfo && product.userinfo.avator ? (
+            {product.userinfo && product.userinfo.avatarUrl ? (
               <View 
                 className={`${prefix}-user-avator`}
-                style="background-image: url('')"
+                style={`background-image: url(${product.userinfo.avatarUrl})`}
               />
             ) : (
               <AtIcon
@@ -85,7 +131,7 @@ class Product extends Taro.Component {
                 color='#828E99'
               />
             )}
-            <View className={`${prefix}-user-name`}>{product.userinfo && product.userinfo.username}</View>
+            <View className={`${prefix}-user-name`}>{product.userinfo && product.userinfo.nickName}</View>
           </View>
         )}
         

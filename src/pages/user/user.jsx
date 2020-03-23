@@ -17,6 +17,7 @@ class User extends Taro.Component {
 
   componentDidShow () {
     const userinfo = loginManager.getUserinfo();
+    console.log('userinfo: ', userinfo);
     if (userinfo.success) {
       this.setState({userinfo: userinfo.result});
 
@@ -77,11 +78,11 @@ class User extends Taro.Component {
         <View className={`${prefix}-user`}>
           <View 
             className={`${prefix}-user-image`} 
-            style={`background-image: url('https://img14.360buyimg.com/babel/s700x360_jfs/t1/4099/12/2578/101668/5b971b4bE65ae279d/89dd1764797acfd9.jpg!q90!cc_350x180')`}
+            style={`background-image: url(${userinfo.avatarUrl})`}
           />
           <View className={`${prefix}-user-detail`}>
-            <View className={`${prefix}-user-detail-name`}>{userinfo.name}</View>
-            <View className={`${prefix}-user-detail-phone`}>{userinfo.phone}</View>
+            <View className={`${prefix}-user-detail-name`}>{userinfo.nickName}</View>
+            <View className={`${prefix}-user-detail-phone`}>{userinfo.city}</View>
           </View>
         </View>
         <Menu
