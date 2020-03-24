@@ -97,7 +97,7 @@ class Publish extends Component {
         description,
         amount,
         type: currentType.id,
-        pics: pics.join(','),
+        pics: pics,
         user_id: userinfo.result.user_id,
         trans_type: Number(trans_type),
       };

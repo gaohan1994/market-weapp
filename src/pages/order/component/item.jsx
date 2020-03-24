@@ -102,7 +102,7 @@ class OrderItem extends Taro.Component {
         contentTitle={order.product_name}
         contentDetail='共1件商品 合计：'
         contentMater={numeral(order.pay_amount || 0).format('0.00')}
-        image={order.product_picture && order.product_picture.split(',')[0] || defaultImage}
+        image={order.product_picture && order.product_picture[0] || defaultImage}
         buttons={buttons}
       />
     );

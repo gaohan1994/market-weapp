@@ -91,7 +91,7 @@ class Publish extends Component {
       const payload = {
         title,
         description,
-        pics: pics.join(','),
+        pics: pics,
         user_id: userinfo.result.user_id,
       };
       const result = await topicAction.topicAdd(payload);

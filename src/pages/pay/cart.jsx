@@ -76,7 +76,7 @@ class Cart extends Taro.Component {
           contentTitle={`${cartProduct.title} ${cartProduct.description}`}
           contentDetail=' '
           contentMater={`￥ ${numeral(cartProduct.amount || 0).format('0.00')}`}
-          image={cartProduct.pics && cartProduct.pics.split(',')[0] || defaultImage}
+          image={cartProduct.pics && cartProduct.pics[0] || defaultImage}
         />
 
         <View className={`${prefix}-rows`}>

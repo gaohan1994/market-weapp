@@ -22,7 +22,7 @@ class Product extends Taro.Component {
       url: `/pages/${type}/${type}?id=${product.id}`
     })
   }
-
+  
   renderUser = () => {
     const { product } = this.props;
     return (
@@ -43,7 +43,7 @@ class Product extends Taro.Component {
     const { product, type } = this.props;
 
     const cover = product && product.pics && product.pics.length > 0
-      ? product.pics.split(',')[0]
+      ? product.pics[0]
       : defaultImage;
 
     if (type === 'topic') {
@@ -58,7 +58,14 @@ class Product extends Taro.Component {
       }];
 
       return (
-        <View className={`${prefix}-topic`}>
+        <View 
+          className={`${prefix}-topic`}
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/topic/topic.detail?id=${product.id}`
+            });
+          }}
+        >
           {this.renderUser()}
           <View className={`${prefix}-topic-content`}>
             <View className={`${prefix}-topic-content-title`}>{product.title}</View>
@@ -71,7 +78,7 @@ class Product extends Taro.Component {
                 return (
                   <View 
                     key={`i${index}`}
-                    className={`${prefix}-topic-image-${product.pics % 3}`}
+                    className={`${prefix}-topic-image-${product.pics.length > 2 ? 2 : 1} ${product.pics.length > 1 && index % 2 !== 0 ? `${prefix}-topic-image-mar` : ''}`}
                     style={`background-image: url(${img})`}
                   />
                 )
@@ -80,10 +87,10 @@ class Product extends Taro.Component {
           )}
 
           <View className={`${prefix}-topic-bar`}>
-            {bars.map((bar) => {
+            {bars.map((bar, index) => {
               return (
                 <View 
-                  className={`${prefix}-topic-bar-item`}
+                  className={`${prefix}-topic-bar-item ${index + 1 !== bars.length ? `${prefix}-topic-bar-mar` : ''} `}
                   key={bar.title}
                 >
                   <AtIcon

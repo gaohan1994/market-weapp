@@ -43,7 +43,7 @@ class Index extends Component {
       ? productRandom.map((item) => {
         return {
           id: item.id,
-          pic: item.pics.split(',')[0]
+          pic: item.pics[0]
         };
       })
       : [];

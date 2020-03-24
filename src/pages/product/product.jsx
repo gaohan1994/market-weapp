@@ -194,10 +194,7 @@ class ProductDetail extends Taro.Component {
 
   setArticle () {
     const { productDetail } = this.props;
-
-    const images = productDetail.pics && productDetail.pics !== []
-      ? productDetail.pics.split(',')
-      : [];
+    const images = productDetail.pics || [];
 
     return (
       <View className='at-article'>

@@ -45,7 +45,7 @@ class Product extends Taro.Component {
         subTitle={dayJs(collect && collect.product && collect.product.create_time).format('YYYY-MM-DD')}
         mater={numeral(collect && collect.product && collect.product.amount || 0).format('0.00')}
         contentTitle={collect && collect.product && collect.product.title}
-        images={collect && collect.product && collect.product.pics.split(',') || [defaultImage]}
+        images={collect && collect.product && collect.product.pics || [defaultImage]}
         buttons={[
           {title: '取消收藏', onClick: () => {
             Taro.showModal({
