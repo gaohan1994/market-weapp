@@ -15,6 +15,7 @@ import loginManager from '../../common/util/login.manager';
 import Comment from './component/comment';
 import MessageItem from '../../component/item/MessageItem';
 import ListEmpty from '../../component/list/empty';
+import Footer from '../../component/layout/footer';
 
 let offset = 0;
 const prefix = 'product';
@@ -172,7 +173,6 @@ class ProductDetail extends Taro.Component {
   }
 
   onMessageClick = (message) => {
-    console.log('message: ', message);
     this.setState({
       parentMessage: message,
       showComment: true,
@@ -183,8 +183,8 @@ class ProductDetail extends Taro.Component {
     const { productDetail } = this.props;
     return (
       <BaseItem
-        avator={defaultImage}
-        title={productDetail && productDetail.userinfo && productDetail.userinfo.username}
+        avator={productDetail && productDetail.userinfo.avatarUrl || defaultImage}
+        title={productDetail && productDetail.userinfo && productDetail.userinfo.nickName}
         subTitle={`${dayJs(productDetail.create_time || '').format('YYYY.MM.DD')} 发布`}
         mater={numeral(productDetail.amount).format('0.00')}
         isRenderContent={false}
@@ -240,41 +240,22 @@ class ProductDetail extends Taro.Component {
   setFooter () {
     const { productDetail } = this.props;
     const items = [
-      {key: 1, title: '留言', icon: ''},
-      {key: 2, title: productDetail && productDetail.collect && productDetail.collect.collect ? '取消收藏' : '收藏', icon: ''},
+      {key: 1, title: '留言', icon: 'message'},
+      {
+        key: 2, 
+        title: productDetail && productDetail.collect && productDetail.collect.collect ? '取消收藏' : '收藏', 
+        icon: productDetail && productDetail.collect && productDetail.collect.collect ? 'heart-2' : 'heart',
+        color: productDetail && productDetail.collect && productDetail.collect.collect ? '#DF394D' : ''
+      },
     ];
     return (
-      <View className={`${prefix}-footer`}>
-        <View className={`${prefix}-footer-content`}>
-          {
-            items.map((item) => {
-              return (
-                <View
-                  key={item.key}
-                  className={`${prefix}-footer-content-item`}
-                  onClick={() => this.onItemClick(item)}
-                >
-                  <Image 
-                    src={defaultImage}
-                    className={`${prefix}-footer-content-item-icon`}
-                  />  
-                  <View className={`${prefix}-footer-content-item-title`}>{item.title}</View>
-                </View>
-              )
-            })
-          }
-          <View className={`${prefix}-footer-content-right`}>
-            <View
-              type='primary'
-              className={`${prefix}-footer-button`}
-              onClick={() => this.onCart()}
-            >
-              我想要
-            </View>
-          </View>
-        </View>
-      </View>
-    );
+      <Footer
+        items={items}
+        onItemClick={(item) => this.onItemClick(item)}
+        button='我想要'
+        buttonClick={() => this.onCart()}
+      />
+    )
   }
 
   render () {

@@ -70,8 +70,8 @@ class Cart extends Taro.Component {
         <BaseItem
           pad
           type='image'
-          avator={cartProduct.userinfo && cartProduct.userinfo.avator || defaultImage}
-          title={cartProduct.userinfo && cartProduct.userinfo.username}
+          avator={cartProduct.userinfo && cartProduct.userinfo.avatarUrl || defaultImage}
+          title={cartProduct.userinfo && cartProduct.userinfo.nickName}
           subTitle={dayJs(cartProduct.create_time || '').format('YYYY-MM-DD')}
           contentTitle={`${cartProduct.title} ${cartProduct.description}`}
           contentDetail=' '

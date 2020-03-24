@@ -49,11 +49,10 @@ class Product extends Taro.Component {
     if (type === 'topic') {
 
       const bars = [{
-        title: '80',
+        title: '收藏',
         icon: 'heart',
-        color: '#DF394D',
       }, {
-        title: '90',
+        title: '留言',
         icon: 'message'
       }];
 
@@ -62,7 +61,7 @@ class Product extends Taro.Component {
           className={`${prefix}-topic`}
           onClick={() => {
             Taro.navigateTo({
-              url: `/pages/topic/topic.detail?id=${product.id}`
+              url: `/pages/topic/topic?id=${product.id}`
             });
           }}
         >
@@ -87,10 +86,10 @@ class Product extends Taro.Component {
           )}
 
           <View className={`${prefix}-topic-bar`}>
-            {bars.map((bar, index) => {
+            {bars.map((bar) => {
               return (
                 <View 
-                  className={`${prefix}-topic-bar-item ${index + 1 !== bars.length ? `${prefix}-topic-bar-mar` : ''} `}
+                  className={`${prefix}-topic-bar-item`}
                   key={bar.title}
                 >
                   <AtIcon
@@ -98,7 +97,7 @@ class Product extends Taro.Component {
                     size='15'
                     color={bar.color || '#666666'}
                   />
-                  <View style='margin-left: 5px' className={`${prefix}-topic-content-desc`}> {bar.title} </View>
+                  <View style='margin-left: 5px' className={`${prefix}-topic-content-desc`}>{bar.title} </View>
                 </View>
               )
             })}

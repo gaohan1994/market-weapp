@@ -40,8 +40,8 @@ class Product extends Taro.Component {
     const { collect } = this.props;
     return (
       <BaseItem
-        avator={collect && collect.product && collect.product.userinfo && collect.product.userinfo.avator || defaultImage}
-        title={collect && collect.product && collect.product.userinfo && collect.product.userinfo.username}
+        avator={collect && collect.product && collect.product.userinfo && collect.product.userinfo.avatarUrl || defaultImage}
+        title={collect && collect.product && collect.product.userinfo && collect.product.userinfo.nickName}
         subTitle={dayJs(collect && collect.product && collect.product.create_time).format('YYYY-MM-DD')}
         mater={numeral(collect && collect.product && collect.product.amount || 0).format('0.00')}
         contentTitle={collect && collect.product && collect.product.title}

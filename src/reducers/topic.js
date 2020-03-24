@@ -5,11 +5,36 @@ const INITIAL_STATE = {
   topicHomeList: [],
   topicList: [],
   topicListTotal: 0,
+  messageList: [],
+  messageTotal: 0,
+  productDetail: {},
 };
 
 export default function topic (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+    case constants.RECEIVE_TOPIC_DETAIL: {
+      const { payload } = action;
+      return {
+        ...state,
+        productDetail: payload
+      };
+    }
+
+    case constants.RECEIVE_TOPIC_MESSAGE_LIST: {
+      const { payload } = action;
+      const { count, rows, field = {} } = payload;
+      const { offset = 0 } = field;
+      const nextList = 
+        offset === 0 
+        ? rows
+        : merge([], state.messageList).concat(rows);
+      return {
+        ...state,
+        messageTotal: count,
+        messageList: nextList
+      };
+    }
 
     case constants.RECEIVE_TOPIC_LIST: {
       const { payload } = action;

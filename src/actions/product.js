@@ -54,6 +54,7 @@ class ProductAction {
     userinfo,
     content,
     parentMessage,
+    type = 0,
   ) => {
     /**
      * @todo 组成基本参数
@@ -61,7 +62,8 @@ class ProductAction {
     let payload = {
       item_id: product.id,
       user_id: userinfo.user_id,
-      content
+      content,
+      type,
     };
 
     /**
@@ -82,7 +84,7 @@ class ProductAction {
     const result = await requestHttp.get(`/message/list${jsonToQueryString(params)}`);
     if (result.code === ResponseCode.success) {
       store.dispatch({
-        type: constants.RECEIVE_MESSAGE_LIST,
+        type: params.type === 1 ? constants.RECEIVE_TOPIC_MESSAGE_LIST : constants.RECEIVE_MESSAGE_LIST,
         payload: {
           ...result.data,
           params

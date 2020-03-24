@@ -38,14 +38,15 @@ class Comment extends Taro.Component {
   async onConfirm () {
     try {
       const { value } = this.state;  
-      const { product, userinfo, parentMessage, callback } = this.props;
+      const { product, userinfo, parentMessage, callback, type = 0 } = this.props;
       invariant(!!value, '请输入要回复的内容');
       Taro.showLoading();
       const result = await productAction.sendMessage(
         product,
         userinfo,
         value,
-        parentMessage
+        parentMessage,
+        type,
       );
       Taro.hideLoading();
       invariant(result.code === ResponseCode.success, result.msg || ' ');
@@ -68,9 +69,9 @@ class Comment extends Taro.Component {
       <View className={`${prefix}-header`}>
         <View 
           className={`${prefix}-header-avator`}
-          style={`background-image: url(${userinfo.avator || defaultImage})`}
+          style={`background-image: url(${userinfo.avatarUrl || defaultImage})`}
         />
-        <View>{userinfo.name}</View>
+        <View>{userinfo.nickName}</View>
       </View>
     );
   }
@@ -87,7 +88,7 @@ class Comment extends Taro.Component {
           placeholderClass={`${prefix}-content-input-place`}
           focus={this.state.focus}
           placeholder={parentMessage && parentMessage.id 
-            ? `回复 ${parentMessage.userinfo && parentMessage.userinfo.username}` 
+            ? `回复 ${parentMessage.userinfo && parentMessage.userinfo.nickName}` 
             : '写下你想说的话吧~'}
           value={value}
           onInput={this.onInput}

@@ -15,9 +15,9 @@ class MessageItem extends Taro.Component {
       <View className={`${prefix}-user`}>
         <View
           className={`${prefix}-user-avator`}
-          style={`background-image: url(${message.userinfo && message.userinfo.avator || defaultImage})`}
+          style={`background-image: url(${message.userinfo && message.userinfo.avatarUrl || defaultImage})`}
         />
-        <View className={`${prefix}-user-name`} >{message.userinfo && message.userinfo.username}</View>
+        <View className={`${prefix}-user-name`} >{message.userinfo && message.userinfo.nickName}</View>
         <View className={`${prefix}-user-time`} >{dayJs(message && message.create_time || '').format('YYYY-MM-DD HH:mm:ss')}</View>
       </View>
     );
@@ -46,12 +46,12 @@ class MessageItem extends Taro.Component {
                 className={`${prefix}-sub-item`}
               >
                 <View className={`${prefix}-sub-item-user`}>
-                  <View >{item.userinfo && item.userinfo.username}</View>
+                  <View >{item.userinfo && item.userinfo.nickName}</View>
                   <View className={`${prefix}-sub-item-time`}>{dayJs(item.create_time).format('YYYY-MM-DD HH:mm:ss')}</View>
                 </View>
                 <View className={`${prefix}-sub-item-content`}>
                   回复
-                  <View className={`${prefix}-sub-item-reply`}>{message.userinfo.username}</View>
+                  <View className={`${prefix}-sub-item-reply`}>{message.userinfo.nickName}</View>
                   {`: ${item.content}`}
                 </View>
               </View>
