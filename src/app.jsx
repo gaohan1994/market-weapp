@@ -37,29 +37,29 @@ class App extends Component {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarBackgroundColor: '#F05065',
+      navigationBarTitleText: '微易',
+      navigationBarTextStyle: 'white'
     },
     tabBar: {
-      color: "#ACACAC",
-      selectedColor: "#2EAAF8",
+      color: "#929292",
+      selectedColor: "#DF394D",
       backgroundColor: "#ffffff",
       borderStyle: 'black',
       list: [{
         pagePath: "pages/index/index",
-        iconPath: "./assets/tab-bar/icon_nav_home.png",
-        selectedIconPath: "./assets/tab-bar/icon_nav_home_xuan.png",
+        iconPath: "./assets/tab-bar/home.unselected.png",
+        selectedIconPath: "./assets/tab-bar/home.png",
         text: "首页"
       }, {
         pagePath: "pages/publish/index",
-        iconPath: "./assets/tab-bar/icon_reportforms.png",
-        selectedIconPath: "./assets/tab-bar/icon_reportforms_xuan.png",
+        iconPath: "./assets/tab-bar/jijing.unselected.png",
+        selectedIconPath: "./assets/tab-bar/jijing.png",
         text: "发布"
       }, {
         pagePath: "pages/user/user",
-        iconPath: "./assets/tab-bar/icon_mine.png",
-        selectedIconPath: "./assets/tab-bar/icon_mine_xuan.png",
+        iconPath: "./assets/tab-bar/class.unselected.png",
+        selectedIconPath: "./assets/tab-bar/class.png",
         text: "我的"
       }]
     }

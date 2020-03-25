@@ -2,12 +2,22 @@
 
 @prefix: index;
 
+@color-height: 300px;
+
 .@{prefix} {
   flex-direction: column;
   width: 100%;
   &-bg {
     .padding(15px, b);
-    // background: linear-gradient(90deg,rgba(240,80,101,1) 0%,rgba(253,167,92,1) 100%);
+  }
+  &-color {
+    width: 100%;
+    height: @color-height;
+    background: linear-gradient(180deg,#F05065 0%,rgba(253,167,92,1) 100%);
+  }
+  &-pos {
+    position: relative;
+    margin-top: -@color-height;
   }
   &-list {
     position: absolute;

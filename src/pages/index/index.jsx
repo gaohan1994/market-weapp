@@ -54,40 +54,43 @@ class Index extends Component {
           className='index-list'
         >
           <View className='index-bg'>
-            <Header />
-            <MySwiper  
-              images={images}
-              onClick={this.onSwiperClick}
-            />
+            <View className='index-color' />
+            <View className='index-pos'>
+              <Header />
+              <MySwiper  
+                images={images}
+                onClick={this.onSwiperClick}
+              />  
+            </View>
           </View>
-          <SectionHeader
+          {/* <SectionHeader
             title='每日更新'
             showMore={false}
-          />
+          /> */}
           <Publish />
 
-          {/* <SectionHeader
+          <SectionHeader
             title='精品帖子'
             onClick={() => {
               Taro.navigateTo({
                 url: '/pages/topic/topic.main'
               });
             }}
-          /> */}
+          />
           <MyList 
             type='topic'
             productList={topicHomeList.length > 4 ? topicHomeList.slice(0, 4) : topicHomeList}
             showMore={false}
           />
 
-          {/* <SectionHeader
+          <SectionHeader
             title='跳蚤市场'
             onClick={() => {
               Taro.navigateTo({
                 url: `/pages/product/product.list`
               })
             }}
-          /> */}
+          />
           <MyList 
             productList={productList.length > 4 ? productList.slice(0, 4) : productList}
             showMore={false}

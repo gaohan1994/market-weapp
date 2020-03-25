@@ -15,7 +15,7 @@ class MySwiper extends Taro.Component {
       <Swiper
         className={`${prefix}`}
         indicatorColor='#999'
-        indicatorActiveColor='#333'
+        indicatorActiveColor='#F05065'
         circular
         indicatorDots
         autoplay
