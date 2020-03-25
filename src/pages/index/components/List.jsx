@@ -10,11 +10,15 @@ const prefix = 'index-component-list';
 
 class List extends Taro.Component {
 
+  config = {
+    addGlobalClass: true
+  }
+
   render () {
-    const { productList, productListTotal, type, showMore = true } = this.props;
+    const { className, productList, productListTotal, type, showMore = true } = this.props;
     return (
       <ScrollView
-        className={`${prefix} container-color`}
+        className={`${prefix} container-color ${className}`}
         scrollY
       >
         {productList.length === 0 && (

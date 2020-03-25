@@ -49,10 +49,10 @@ class Product extends Taro.Component {
     if (type === 'topic') {
 
       const bars = [{
-        title: '收藏',
+        title: `收藏(${product.collect_count > 99 ? '99+' : product.collect_count})`,
         icon: 'heart',
       }, {
-        title: '留言',
+        title: `留言`,
         icon: 'message'
       }];
 
@@ -97,7 +97,7 @@ class Product extends Taro.Component {
                     size='15'
                     color={bar.color || '#666666'}
                   />
-                  <View style='margin-left: 5px' className={`${prefix}-topic-content-desc`}>{bar.title} </View>
+                  <View style='margin-left: 5px' className={`${prefix}-topic-content-desc`}>{bar.title}</View>
                 </View>
               )
             })}

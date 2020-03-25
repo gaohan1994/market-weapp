@@ -70,20 +70,6 @@ class Index extends Component {
           <Publish />
 
           <SectionHeader
-            title='精品帖子'
-            onClick={() => {
-              Taro.navigateTo({
-                url: '/pages/topic/topic.main'
-              });
-            }}
-          />
-          <MyList 
-            type='topic'
-            productList={topicHomeList.length > 4 ? topicHomeList.slice(0, 4) : topicHomeList}
-            showMore={false}
-          />
-
-          <SectionHeader
             title='跳蚤市场'
             onClick={() => {
               Taro.navigateTo({
