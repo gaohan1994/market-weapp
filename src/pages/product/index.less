@@ -19,6 +19,21 @@
     bottom: 0;
     left: 0;
     right: 0;
+
+    &-topic {
+      .margin(30px, l);
+      .padding(50px, l);
+      .padding(150px, r);
+      height: 60px;
+      border-radius: 30px;
+      background: #f2f2f2;
+      .flex(center);
+      &-text {
+        font-size: 24px;
+        color: #666666;
+        .margin(10px, l);
+      }
+    }
     
     &-content {
       &::before {
@@ -35,6 +50,8 @@
         top: 50%;
         right: 30px;
         transform: translateY(-50%);
+        display: flex;
+        flex-direction: row;
       }
 
       &-item {

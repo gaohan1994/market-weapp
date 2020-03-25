@@ -8,11 +8,21 @@ const INITIAL_STATE = {
   messageList: [],
   messageTotal: 0,
   productDetail: {},
+  topicTypes: [],
 };
 
 export default function topic (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+
+    case constants.RECEIVE_PRODUCT_TOPIC_TYPES: {
+      const { payload } = action;
+      return {
+        ...state,
+        topicTypes: payload.data,
+      }
+    }
+
     case constants.RECEIVE_TOPIC_DETAIL: {
       const { payload } = action;
       return {

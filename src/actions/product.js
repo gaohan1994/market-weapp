@@ -212,6 +212,16 @@ class ProductAction {
     }
   }
 
+  topicTypes = async () => {
+    const result = await requestHttp.get(`/type/list?type=1`);
+    if (result.code === ResponseCode.success) {
+      store.dispatch({
+        type: constants.RECEIVE_PRODUCT_TOPIC_TYPES,
+        payload: result
+      });
+    }
+  }
+
   /**
    * @todo [请求首页的数据]
    */

@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
 import invariant from 'invariant';
-import { View, Image } from '@tarojs/components';
+import { View, Swiper, SwiperItem } from '@tarojs/components';
 import { AtLoadMore } from 'taro-ui';
 import dayJs from 'dayjs';
 import { connect } from '@tarojs/redux';
@@ -11,6 +11,7 @@ import BaseItem from '../../component/item/BaseItem';
 import { defaultImage } from '../../common/util/common';
 import MyRow from '../../component/row/index';
 import "../product/index.less";
+import "./index.less";
 import loginManager from '../../common/util/login.manager';
 import Comment from '../product/component/comment';
 import MessageItem from '../../component/item/MessageItem';
@@ -175,7 +176,7 @@ class Page extends Taro.Component {
     const { productDetail } = this.props;
     return (
       <BaseItem
-        avator={defaultImage}
+        avator={productDetail && productDetail.userinfo && productDetail.userinfo.avatarUrl || defaultImage}
         title={productDetail && productDetail.userinfo && productDetail.userinfo.nickName}
         subTitle={`${dayJs(productDetail.create_time || '').format('YYYY.MM.DD')} 发布`}
         isRenderContent={false}
@@ -186,9 +187,38 @@ class Page extends Taro.Component {
   setArticle () {
     const { productDetail } = this.props;
     const images = productDetail.pics || [];
-
     return (
       <View className='at-article'>
+        {images.length > 0 && (
+          <Swiper 
+            className='topic-swiper'
+            indicatorColor='#999'
+            indicatorActiveColor='#F05065'
+            circular
+            indicatorDots
+            autoplay
+          >
+            {images.map((pic, index) => {
+              return (
+                <SwiperItem
+                  key={`d${index}`}
+                  className='topic-swiper-item'
+                  onClick={() => {
+                    Taro.previewImage({
+                      urls: images,
+                      index: index,
+                    });
+                  }}
+                >
+                  <View
+                    className='topic-swiper-image'
+                    style={`background-image: url(${pic})`} 
+                  />
+                </SwiperItem>
+              )
+            })}
+          </Swiper>
+        )}
         <View className='at-article__h1'>
           {productDetail.title}
         </View>
@@ -197,16 +227,6 @@ class Page extends Taro.Component {
             <View className='at-article__p'>
               {productDetail.description}
             </View>
-            {images.length > 0 && images.map((pic, index) => {
-              return (
-                <Image
-                  key={`p${index}`} 
-                  className='at-article__img' 
-                  src={pic} 
-                  mode='widthFix'
-                />
-              )
-            })}
           </View>
         </View>
       </View>
@@ -242,7 +262,10 @@ class Page extends Taro.Component {
     ];
     return (
       <Footer
+        type='topic'
         items={items}
+        button='说点什么...'
+        buttonClick={() => this.showCommentHandle()}
         onItemClick={(item) => this.onItemClick(item)}
       />
     );

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtInput, AtTextarea, AtButton, AtImagePicker } from 'taro-ui';
 import invariant from 'invariant';
@@ -8,6 +8,7 @@ import productAction from '../../actions/product';
 import topicAction from '../../actions/topic';
 import { ResponseCode } from '../../common/request/config';
 import loginManager from '../../common/util/login.manager';
+import FormRow from '../../component/row';
 
 const prefix = 'publish';
 class Publish extends Component {
@@ -21,6 +22,7 @@ class Publish extends Component {
 
   async componentDidShow () {
     const userinfo = await loginManager.getUserinfo();
+    productAction.topicTypes();
     if (!userinfo.success) {
       Taro.navigateTo({
         url: '/pages/sign/login'
@@ -41,11 +43,9 @@ class Publish extends Component {
   }
 
   onChange (files) {
-    console.log('files: ', files);
     this.setState({files})
   }
   onFail (mes) {
-    console.log('mes: ', mes);
     Taro.atMessage({
       'message': `${mes.message}`,
       'type': 'error',
@@ -54,9 +54,6 @@ class Publish extends Component {
 
   changeSelector = (e) => {
     this.setState({typeValue: e.detail.value});
-  }
-  onImageClick (index, file) {
-    console.log(index, file)
   }
 
   reset = () => {
@@ -76,12 +73,13 @@ class Publish extends Component {
         typeValue,
         files,
       } = this.state;
+      const { productTypes } = this.props;
       invariant(!!title, '请输入帖子标题');
       invariant(!!description, '请输入帖子详情');
       // invariant(files.length > 0, '请上传帖子图片');
       Taro.showLoading({ title: '上传图片中~', mask: true });
 
-      // const currentType = productTypes[typeValue];
+      const currentType = productTypes[typeValue];
       let pics = [];
       if (files.length > 0) {
         pics = await productAction.uploadImages(files);
@@ -93,6 +91,7 @@ class Publish extends Component {
         description,
         pics: pics,
         user_id: userinfo.result.user_id,
+        type: currentType.id
       };
       const result = await topicAction.topicAdd(payload);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
@@ -130,6 +129,27 @@ class Publish extends Component {
     );
   }
 
+  renderForms = () => {
+    const { typeValue } = this.state;
+    const { productTypes, productTypesSelector } = this.props;
+    return (
+      <View>
+        <Picker
+          mode='selector'
+          range={productTypesSelector}
+          onChange={this.changeSelector}
+          value={typeValue}
+        >
+          <FormRow
+            title='分类'
+            extraText={productTypes[typeValue] && productTypes[typeValue].name || ''}
+            arrow='right'
+          />
+        </Picker>
+      </View>
+    );
+  }
+
   render () {
     return (
       <View className='container container-color'>
@@ -153,6 +173,7 @@ class Publish extends Component {
           placeholder='在这里详细描述你想说的话吧...'
         />
         {this.renderImages()}
+        {this.renderForms()}
         <AtButton
           className={`${prefix}-button`}
           type='primary'
@@ -175,7 +196,11 @@ class Publish extends Component {
 // #endregion
 
 const select = (state) => {
+  const productTypes =  state.topic.topicTypes;
+  const productTypesSelector = productTypes.map((type) => type.name);
   return {
+    productTypes,
+    productTypesSelector,
   };
 };
 
