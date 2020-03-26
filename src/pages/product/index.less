@@ -93,6 +93,12 @@
     background: #fff;
     .flex(center, flex-start);
 
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+
     &-item {
       display: flex;
       flex: 1;
@@ -104,5 +110,8 @@
         color: @theme-color;
       }
     }
+  }
+  &-scrollview {
+    .padding(90px, t);
   }
 }

@@ -3,7 +3,7 @@
  * @Author: Ghan 
  * @Date: 2020-03-26 13:35:22 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-03-26 14:58:06
+ * @Last Modified time: 2020-03-26 15:04:36
  */
 import Taro from '@tarojs/taro'
 import { AtActivityIndicator } from 'taro-ui';
@@ -167,16 +167,18 @@ class Page extends Taro.Component {
     return (
       <View className='container container-color'>
         {this.renderField()}
-        {!!loading 
-        ? (
-          <AtActivityIndicator mode='center' size='large' />
-        ) 
-        : (
-          <MyList 
-            productList={productList}
-            productListTotal={productListTotal}
-          />
-        )}
+        <View className={`${prefix}-scrollview`}>
+          {!!loading 
+          ? (
+            <AtActivityIndicator mode='center' size='large' />
+          ) 
+          : (
+            <MyList 
+              productList={productList}
+              productListTotal={productListTotal}
+            />
+          )}
+        </View>
       </View>
     )
   }
