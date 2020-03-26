@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtInput, AtTextarea, AtButton, AtImagePicker, AtMessage } from 'taro-ui';
 import invariant from 'invariant';
 import './publish.less'
+import '../index/index.less';
 import productAction from '../../actions/product';
 import FormRow from '../../component/row';
 import { ResponseCode } from '../../common/request/config';

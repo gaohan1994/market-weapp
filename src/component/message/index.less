@@ -1,0 +1,41 @@
+
+@import "../../styles/theme.less";
+
+@prefix-message: c-message;
+.@{prefix-message} {
+  width: 100%;
+  background: #fff;
+  .margin(20px, b);
+  &-content {
+    position: relative;
+    .padding(20px);
+    display: flex;
+    flex-direction: row;
+    &-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      .margin(20px, r);
+      .bg;
+    }
+    &-detail {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    &-title {
+      font-size: 30px;
+      font-weight: bold;
+      line-height: 1;
+    }
+    &-text {
+      font-size: 24px;
+      color: #666666;
+      line-height: 1;
+      .margin(10px, t);
+    }
+    &-time {
+      .margin(30px, t);
+    }
+  }
+}

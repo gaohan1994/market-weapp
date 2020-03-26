@@ -32,7 +32,7 @@ class App extends Component {
       'pages/product/product.user',
       'pages/search/search',
       'pages/pay/cart',
-      'pages/product/product.list',
+      'pages/product/productList',
       'pages/topic/topicMain',
       'pages/topic/topic',
       'pages/topic/topic.user'
@@ -55,6 +55,11 @@ class App extends Component {
         text: "首页"
       }, {
         pagePath: "pages/topic/topicMain",
+        iconPath: "./assets/tab-bar/mine.unselected.png",
+        selectedIconPath: "./assets/tab-bar/mine.png",
+        text: "商城"
+      }, {
+        pagePath: "pages/topic/topicMain",
         iconPath: "./assets/tab-bar/course.unselected.png",
         selectedIconPath: "./assets/tab-bar/course.png",
         text: "论坛"
@@ -62,7 +67,7 @@ class App extends Component {
         pagePath: "pages/publish/index",
         iconPath: "./assets/tab-bar/jijing.unselected.png",
         selectedIconPath: "./assets/tab-bar/jijing.png",
-        text: "发布"
+        text: "消息"
       }, {
         pagePath: "pages/user/user",
         iconPath: "./assets/tab-bar/class.unselected.png",

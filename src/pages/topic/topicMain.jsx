@@ -12,6 +12,7 @@ import TopicAction from '../../actions/topic';
 import MyList from '../index/components/List';
 import { getTopicList, getTopicListTotal } from '../../reducers/topic';
 import { ResponseCode } from '../../common/request/config';
+import PublishButton from '../../component/layout/button';
 
 const prefix = 'topic';
 
@@ -120,10 +121,16 @@ class Page extends Taro.Component {
                 />
               )}
             </View>
-            
           </View>
-
         )}
+        <PublishButton
+          title='发布'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/publish/publish.topic`
+            })
+          }}
+        />
       </View>
     )
   }

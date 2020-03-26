@@ -1,11 +1,12 @@
 import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import { AtFab } from 'taro-ui';
+import { connect } from '@tarojs/redux';
 import loginManager from '../../common/util/login.manager';
 import Menu from '../../component/menu/Menu';
+import productAction from '../../actions/product';
 import './publish.less'
-
-const prefix = 'publish';
+import '../index/index.less';
+import MessageList from '../../component/list/message';
 
 class PublishIndex extends Taro.Component {
 
@@ -19,6 +20,12 @@ class PublishIndex extends Taro.Component {
       this.setState({
         userinfo: result.result
       });
+
+      const payload = {
+        user_id: result.result.user_id,
+        type: 0,
+      }
+      productAction.messageUserList(payload);
     }
   }
 
@@ -56,65 +63,36 @@ class PublishIndex extends Taro.Component {
     }, 1000);
   }
 
-  navPublish = () => {
-    const result = this.checkAuth();
-    if (result) {
-      Taro.navigateTo({
-        url: '/pages/publish/publish'
-      });
-      return;
-    }
-    this.loginHandle();
-  }
-
-  navTopic = () => {
-    const result = this.checkAuth();
-    if (result) {
-      Taro.navigateTo({
-        url: '/pages/publish/publish.topic'
-      });
-      return;
-    }
-    this.loginHandle();
-  }
-
   render () {
-    const { userinfo } = this.state;
+    const { messageList } = this.props;
     const menus = [
-      {id: 1, name: '我的留言'},
-      {id: 2, name: '回复留言'},
+      {id: 1, name: '商品消息', icon: 'http://net.huanmusic.com/market/news.png'},
+      {id: 2, name: '帖子回复', icon: 'http://net.huanmusic.com/market/my.png'},
     ];
     return (
-      <View className='container container-color publish'>
-        <View className={`${prefix}-bg`} />
-        <Menu
-          menus={menus}
-          onClick={(menu) => this.onMenuClick(menu)}
+      <View className='container container-color'>
+        <View className='index-bg'>
+          <View className='index-color' />
+          <View className='index-pos'>
+            <Menu
+              menus={menus}
+              onClick={(menu) => this.onMenuClick(menu)}
+            />
+          </View>
+        </View>
+        <MessageList 
+          messageList={messageList}
         />
-        
-        <View
-          onClick={() => this.navPublish()}
-        >
-          发布
-        </View>
-        <View
-          onClick={() => this.navTopic()}
-        >
-          发布帖子
-        </View>
-        
-        PublishIndex
-
-        <View className={`${prefix}-button-pub`}>
-          <AtFab
-            onClick={() => this.navPublish()}
-          >
-            <View>发布</View>
-          </AtFab>
-        </View>
       </View>
     )
   }
 }
 
-export default PublishIndex;
+
+const select = (state) => {
+  return {
+    messageList: state.product.messageHomeList
+  };
+};
+
+export default connect(select)(PublishIndex);;

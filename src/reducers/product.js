@@ -20,11 +20,21 @@ const INITIAL_STATE = {
   orderTotal: 0,
   orderDetail: {},
   cartProduct: {},
+  messageHomeList: [],
 }
 
 export default function product (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+
+    case constants.RECEIVE_MESSAGE_HOME_LIST: {
+      const { payload } = action;
+      const { rows } = payload;
+      return {
+        ...state,
+        messageHomeList: rows
+      };
+    }
 
     case constants.RECEIVE_USER_PRODUCT: {
       const { payload } = action;

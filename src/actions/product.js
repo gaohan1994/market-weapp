@@ -80,6 +80,22 @@ class ProductAction {
     return result;
   }
 
+  messageUserList = async (params) => {
+    const userinfo = loginManager.getUserinfo();
+    if (!!userinfo.success) {
+      const result = await requestHttp.get(`/message/list/user${jsonToQueryString(params)}`);
+      if (result.code === ResponseCode.success) {
+        store.dispatch({
+          type: constants.RECEIVE_MESSAGE_HOME_LIST,
+          payload: {
+            ...result.data
+          }
+        });
+      }
+      return result;
+    }
+  }
+
   messageList = async (params) => {
     const result = await requestHttp.get(`/message/list${jsonToQueryString(params)}`);
     if (result.code === ResponseCode.success) {
@@ -226,7 +242,6 @@ class ProductAction {
    * @todo [请求首页的数据]
    */
   productList = async (field = {}) => {
-    console.log('field: ', field);
     const result = await requestHttp.get(`/product/list${jsonToQueryString(field)}`);
     if (result.code === ResponseCode.success) {
 

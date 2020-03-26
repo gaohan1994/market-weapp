@@ -12,7 +12,7 @@ class Page extends Taro.Component {
           className={`${prefix}-item`}
           onClick={() => {
             Taro.navigateTo({
-              url: `/pages/product/product.list`
+              url: `/pages/product/productList`
             })
           }}
         >

@@ -73,7 +73,7 @@ class Index extends Component {
             title='跳蚤市场'
             onClick={() => {
               Taro.navigateTo({
-                url: `/pages/product/product.list`
+                url: `/pages/product/productList`
               })
             }}
           />

@@ -3,7 +3,7 @@
  * @Author: Ghan 
  * @Date: 2020-03-26 13:35:22 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-03-26 15:04:36
+ * @Last Modified time: 2020-03-26 16:31:28
  */
 import Taro from '@tarojs/taro'
 import { AtActivityIndicator } from 'taro-ui';
@@ -15,6 +15,7 @@ import './index.less'
 import productAction from '../../actions/product';
 import MyList from '../index/components/List';
 import { ResponseCode } from '../../common/request/config';
+import PublishButton from '../../component/layout/button';
 
 const fields = [{
   id: 1,
@@ -179,6 +180,15 @@ class Page extends Taro.Component {
             />
           )}
         </View>
+
+        <PublishButton
+          title='发布'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/publish/publish`
+            })
+          }}
+        />
       </View>
     )
   }
