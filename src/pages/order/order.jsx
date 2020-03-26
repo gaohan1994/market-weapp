@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import './index.less'
+import ListNoMore from '../../component/list/noMore';
 import productAction from '../../actions/product';
 import loginManager from '../../common/util/login.manager';
 import { ResponseCode } from '../../common/request/config';
@@ -79,9 +80,7 @@ class Order extends Taro.Component {
             )
           })}
           {orderList.length >= orderTotal && (
-            <View>
-              我也是有底线的
-            </View>
+            <ListNoMore />
           )}
         </ScrollView>
       </View>

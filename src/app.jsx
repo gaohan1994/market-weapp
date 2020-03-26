@@ -29,11 +29,13 @@ class App extends Component {
       'pages/order/order',
       'pages/order/order.detail',
       'pages/product/product',
+      'pages/product/product.user',
       'pages/search/search',
       'pages/pay/cart',
       'pages/product/product.list',
       'pages/topic/topicMain',
-      'pages/topic/topic'
+      'pages/topic/topic',
+      'pages/topic/topic.user'
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -3,6 +3,7 @@ import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui';
 import './index.less'
+import ListNoMore from '../../component/list/noMore'
 import productAction from '../../actions/product';
 import loginManager from '../../common/util/login.manager';
 import { ResponseCode } from '../../common/request/config';
@@ -75,9 +76,7 @@ class Collect extends Taro.Component {
             )
           })}
           {collectList.length >= collectTotal && (
-            <View>
-              我也是有底线的
-            </View>
+            <ListNoMore />
           )}
         </ScrollView>
       </View>

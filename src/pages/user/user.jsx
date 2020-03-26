@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui';
 import './user.less'
+import '../index/index.less';
 import productAction from '../../actions/product';
 import loginManager from '../../common/util/login.manager';
 import Menu from '../../component/menu/Menu';
@@ -33,6 +34,21 @@ class User extends Taro.Component {
   }
 
   onMenuClick = (menu) => {
+    const userinfo = loginManager.getUserinfo();
+    if (!userinfo.success) {
+      Taro.redirectTo({
+        url: `/pages/sign/login`
+      });
+      return;
+    }
+
+    if (menu.id === 1) {
+      Taro.navigateTo({
+        url: '/pages/product/product.user'
+      });
+      return;
+    }
+
     if (menu.id === 3) {
       Taro.navigateTo({
         url: '/pages/order/order'
@@ -42,6 +58,12 @@ class User extends Taro.Component {
     if (menu.id === 4) {
       Taro.navigateTo({
         url: '/pages/collect/collect'
+      });
+      return;
+    }
+    if (menu.id === 5) {
+      Taro.navigateTo({
+        url: '/pages/topic/topic.user'
       });
       return;
     }
@@ -74,30 +96,37 @@ class User extends Taro.Component {
     const { collectTotal, orderTotal } = this.props;
     return (
       <View className='container container-color'>
-        <View className={`${prefix}-bg`} />
-        <View className={`${prefix}-user`}>
-          <View 
-            className={`${prefix}-user-image`} 
-            style={`background-image: url(${userinfo.avatarUrl})`}
-          />
-          <View className={`${prefix}-user-detail`}>
-            <View className={`${prefix}-user-detail-name`}>{userinfo.nickName}</View>
-            <View className={`${prefix}-user-detail-phone`}>{userinfo.city}</View>
+        <View className='index-bg'>
+          <View className='index-color' />
+          <View className='index-pos'>
+            <View className={`${prefix}-user`}>
+              <View 
+                className={`${prefix}-user-image`} 
+                style={`background-image: url(${userinfo.avatarUrl})`}
+              />
+              <View className={`${prefix}-user-detail`}>
+                <View className={`${prefix}-user-detail-name`}>{userinfo.nickName}</View>
+                <View className={`${prefix}-user-detail-phone`}>{userinfo.city}</View>
+              </View>
+            </View>
           </View>
         </View>
+        
         <Menu
           title='卖在微易'
+          onClick={(menu) => this.onMenuClick(menu)}
           menus={[
-            {id: 1, name: '我发布的'},
-            {id: 2, name: '我卖出的'},
+            {id: 1, name: '我发布的', icon: `http://net.huanmusic.com/market/distinguished.logo.png`},
+            {id: 2, name: '我卖出的', icon: `http://net.huanmusic.com/market/teachers.answer.png`},
+            {id: 5, name: '我的帖子', icon: `http://net.huanmusic.com/market/credit.png`},
           ]}
         />
         <Menu
           title='买在微易'
           onClick={(menu) => this.onMenuClick(menu)}
           menus={[
-            {id: 3, name: `我买到的 ${orderTotal}`},
-            {id: 4, name: `我收藏的 ${collectTotal}`},
+            {id: 3, name: `我买到的 ${orderTotal}`, icon: `http://net.huanmusic.com/market/analysis.png`},
+            {id: 4, name: `我收藏的 ${collectTotal}`, icon: `http://net.huanmusic.com/market/collection.png`},
           ]}
         />
         {userinfo.user_id ? (

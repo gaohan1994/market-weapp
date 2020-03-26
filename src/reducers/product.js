@@ -4,6 +4,8 @@ import constants from '../constants';
 const INITIAL_STATE = {
   productTypes: [],
   productList: [],
+  productUserList: [],
+  productUserListTotal: 0,
   productHomeList: [],
   productHomeListTotal: 0,
   productDetail: {},
@@ -23,6 +25,16 @@ const INITIAL_STATE = {
 export default function product (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+
+    case constants.RECEIVE_USER_PRODUCT: {
+      const { payload } = action;
+      const { count, rows } = payload;
+      return {
+        ...state,
+        productUserListTotal: count,
+        productUserList: rows
+      };
+    }
 
     case constants.RECEIVE_ORDER_DETAIL: {
       const { payload } = action;

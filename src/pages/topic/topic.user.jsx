@@ -3,28 +3,22 @@ import { connect } from '@tarojs/redux';
 import invariant from 'invariant';
 import { View } from '@tarojs/components'
 import { AtActivityIndicator } from 'taro-ui'
-// import Types from './component/types'
 import TabsSwitch from './component/tab.switch';
 import './index.less'
-import productAction from '../../actions/product';
-// import Header from '../index/components/Header';
 import TopicAction from '../../actions/topic';
 import MyList from '../index/components/List';
-import { getTopicList, getTopicListTotal } from '../../reducers/topic';
 import { ResponseCode } from '../../common/request/config';
+import loginManager from '../../common/util/login.manager';
 
 const prefix = 'topic';
-
-let offset = 0;
 
 class Page extends Taro.Component {
 
   state = {
-    currentIndex: 0,
     loading: false,
   }
   config = {
-    navigationBarTitleText: '论坛',
+    navigationBarTitleText: '我的帖子',
   };
   
   componentDidShow () {
@@ -32,7 +26,6 @@ class Page extends Taro.Component {
   }
 
   init = async () => {
-    await productAction.topicTypes();
     this.fetchData(0);
   }
 
@@ -40,26 +33,14 @@ class Page extends Taro.Component {
     this.fetchData();
   }
 
-  fetchData = async (page) => {
+  fetchData = async () => {
     try {
+      const userinfo = loginManager.getUserinfo();
       this.setState({loading: true});
-      const { currentIndex } = this.state;
-      const { types } = this.props;
-      const payload = {
-        offset: typeof page === 'number' ? page : offset,
-        limit: 20,
-        type: types[currentIndex].id
-      }
+      const payload = {user_id: userinfo.result.user_id};
       const result = await TopicAction.topicList(payload);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
       this.setState({loading: false});
-
-      if (typeof page === 'number') {
-        offset = page;
-      } else {
-        offset += 20;
-      }
-
     } catch (error) {
       this.setState({loading: false});
       Taro.showToast({
@@ -97,32 +78,20 @@ class Page extends Taro.Component {
 
   render () {
     const { loading } = this.state;
-    const { topicList, topicListTotal, types } = this.props;
+    const { topicList, topicListTotal } = this.props;
     return (
       <View className='container container-color'>
-        {/* <Types /> */}
-        {!types ? (
+        {!!loading 
+        ? (
           <AtActivityIndicator mode='center' size='large' />
-        ) : (
-          <View className='container'>
-            {this.renderTabs()}
-            <View className={`${prefix}-scrollview`}>
-              {!!loading 
-              ? (
-                <AtActivityIndicator mode='center' size='large' />
-              ) 
-              : (
-                <MyList 
-                  type='topic'
-                  productList={topicList}
-                  productListTotal={topicListTotal}
-                  onScrollToLower={this.onScrollToLower}
-                />
-              )}
-            </View>
-            
-          </View>
-
+        ) 
+        : (
+          <MyList 
+            type='topic'
+            productList={topicList}
+            productListTotal={topicListTotal}
+            onScrollToLower={this.onScrollToLower}
+          />
         )}
       </View>
     )
@@ -130,9 +99,8 @@ class Page extends Taro.Component {
 }
 
 const select = (state) => ({
-  topicList: getTopicList(state),
-  topicListTotal: getTopicListTotal(state),
-  types: state.topic.topicTypes,
+  topicList: state.topic.topicUserList,
+  topicListTotal: state.topic.topicUserListTotal,
 });
 
 export default connect(select)(Page);

@@ -22,11 +22,11 @@ class Menu extends Taro.Component {
                   className={`${prefix}-item`}
                   onClick={() => onClick(type)}
                 >
-                  {/* <Image 
-                    src={`${getBaseUrl()}/9f5e0210e2622906e36f30d0d14dbdca`}
-                    className={`${prefix}-item-image`}
-                  /> */}
-                  <AtIcon value='sketch' size='30' color='#666666' />
+                  <View 
+                    className={`${prefix}-icon`}
+                    style={`background-image: url(${type.icon})`}
+                  />
+                  {/* <AtIcon value='sketch' size='30' color='#666666' /> */}
                   <View className={`${prefix}-item-text`}>{type.name}</View>
                 </View>
               );

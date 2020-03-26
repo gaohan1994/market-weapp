@@ -42,6 +42,15 @@ class TopicAction {
   topicList = async (field = {}) => {
     const result = await requestHttp.get(`/topic/list${jsonToQueryString(field)}`);
     if (result.code === ResponseCode.success) {
+
+      if (!!field.user_id) {
+        store.dispatch({
+          type: constants.RECEIVE_USER_TOPIC,
+          payload: {...result.data}
+        });
+        return result;
+      }
+
       store.dispatch({
         type: constants.RECEIVE_TOPIC_LIST,
         payload: {

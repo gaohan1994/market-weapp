@@ -229,6 +229,15 @@ class ProductAction {
     console.log('field: ', field);
     const result = await requestHttp.get(`/product/list${jsonToQueryString(field)}`);
     if (result.code === ResponseCode.success) {
+
+      if (!!field.user_id) {
+        store.dispatch({
+          type: constants.RECEIVE_USER_PRODUCT,
+          payload: {...result.data}
+        });
+        return result;
+      }
+
       store.dispatch({
         type: constants.RECEIVE_PRODUCT_LIST,
         payload: {

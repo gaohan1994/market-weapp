@@ -9,11 +9,23 @@ const INITIAL_STATE = {
   messageTotal: 0,
   productDetail: {},
   topicTypes: [],
+  topicUserList: [],
+  topicUserListTotal: 0,
 };
 
 export default function topic (state = INITIAL_STATE, action) {
   
   switch (action.type) {
+
+    case constants.RECEIVE_USER_TOPIC: {
+      const { payload } = action;
+      const { count, rows } = payload;
+      return {
+        ...state,
+        topicUserListTotal: count,
+        topicUserList: rows
+      };
+    }
 
     case constants.RECEIVE_PRODUCT_TOPIC_TYPES: {
       const { payload } = action;
