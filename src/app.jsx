@@ -54,7 +54,7 @@ class App extends Component {
         selectedIconPath: "./assets/tab-bar/home.png",
         text: "首页"
       }, {
-        pagePath: "pages/topic/topicMain",
+        pagePath: "pages/product/productList",
         iconPath: "./assets/tab-bar/mine.unselected.png",
         selectedIconPath: "./assets/tab-bar/mine.png",
         text: "商城"
