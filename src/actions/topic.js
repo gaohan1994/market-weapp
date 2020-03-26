@@ -40,7 +40,7 @@ class TopicAction {
   }
 
   topicList = async (field = {}) => {
-    const result = await requestHttp.get(`/topic/list`);
+    const result = await requestHttp.get(`/topic/list${jsonToQueryString(field)}`);
     if (result.code === ResponseCode.success) {
       store.dispatch({
         type: constants.RECEIVE_TOPIC_LIST,
@@ -57,7 +57,6 @@ class TopicAction {
    * @todo [请求首页的数据]
    */
   topicHomeList = async (field = {}) => {
-    console.log('field: ', field);
     const result = await requestHttp.get(`/topic/list`);
     if (result.code === ResponseCode.success) {
       store.dispatch({

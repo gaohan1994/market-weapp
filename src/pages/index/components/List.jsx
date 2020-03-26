@@ -15,11 +15,12 @@ class List extends Taro.Component {
   }
 
   render () {
-    const { className, productList, productListTotal, type, showMore = true } = this.props;
+    const { className, onScrollToLower, productList, productListTotal, type, showMore = true } = this.props;
     return (
       <ScrollView
         className={`${prefix} container-color ${className}`}
         scrollY
+        onScrollToLower={onScrollToLower}
       >
         {productList.length === 0 && (
           <ListEmty />

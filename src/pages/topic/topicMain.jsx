@@ -20,7 +20,8 @@ let offset = 0;
 class Page extends Taro.Component {
 
   state = {
-    currentIndex: 0
+    currentIndex: 0,
+    loading: false,
   }
   
   componentDidShow () {
@@ -28,18 +29,36 @@ class Page extends Taro.Component {
   }
 
   init = async () => {
-    productAction.topicTypes();
+    await productAction.topicTypes();
     this.fetchData(0);
+  }
+
+  onScrollToLower = async () => {
+    this.fetchData();
   }
 
   fetchData = async (page) => {
     try {
+      this.setState({loading: true});
+      const { currentIndex } = this.state;
+      const { types } = this.props;
       const payload = {
-        offset: typeof page === 'number' ? page : 0,
+        offset: typeof page === 'number' ? page : offset,
+        limit: 20,
+        type: types[currentIndex].id
       }
       const result = await TopicAction.topicList(payload);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
+      this.setState({loading: false});
+
+      if (typeof page === 'number') {
+        offset = page;
+      } else {
+        offset += 20;
+      }
+
     } catch (error) {
+      this.setState({loading: false});
       Taro.showToast({
         title: error.message,
         icon: 'none'
@@ -48,8 +67,9 @@ class Page extends Taro.Component {
   }
 
   handleClick = (params) => {
-    console.log('params :', params);
-    this.setState({currentIndex: params});
+    this.setState({currentIndex: params}, () => {
+      this.fetchData(0);
+    });
   }
 
   renderTabs = () => {
@@ -73,7 +93,7 @@ class Page extends Taro.Component {
   }
 
   render () {
-    const { } = this.state;
+    const { loading } = this.state;
     const { topicList, topicListTotal, types } = this.props;
     return (
       <View className='container container-color'>
@@ -84,11 +104,18 @@ class Page extends Taro.Component {
           <View className='container'>
             {this.renderTabs()}
             <View className={`${prefix}-scrollview`}>
-              <MyList 
-                type='topic'
-                productList={topicList}
-                productListTotal={topicListTotal}
-              />
+              {!!loading 
+              ? (
+                <AtActivityIndicator mode='center' size='large' />
+              ) 
+              : (
+                <MyList 
+                  type='topic'
+                  productList={topicList}
+                  productListTotal={topicListTotal}
+                  onScrollToLower={this.onScrollToLower}
+                />
+              )}
             </View>
             
           </View>

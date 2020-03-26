@@ -77,7 +77,7 @@ class Product extends Taro.Component {
                 return (
                   <View 
                     key={`i${index}`}
-                    className={`${prefix}-topic-image-${product.pics.length > 2 ? 2 : 1} ${product.pics.length > 1 && index % 2 !== 0 ? `${prefix}-topic-image-mar` : ''}`}
+                    className={`${prefix}-topic-image-${product.pics.length > 2 ? 2 : 1} ${product.pics.length > 1 && index % 2 === 0 ? `${prefix}-topic-image-mar` : ''}`}
                     style={`background-image: url(${img})`}
                   />
                 )
