@@ -87,4 +87,22 @@
     width: 100%;
     background-color: #ffffff;
   }
+
+  &-field {
+    width: 100%;
+    background: #fff;
+    .flex(center, flex-start);
+
+    &-item {
+      display: flex;
+      flex: 1;
+      height: 80px;
+      font-size: 26px;
+      color: #666666;
+      .flex(center, center);
+      &-active {
+        color: @theme-color;
+      }
+    }
+  }
 }

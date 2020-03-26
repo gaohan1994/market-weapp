@@ -225,12 +225,31 @@ class ProductAction {
   /**
    * @todo [请求首页的数据]
    */
+  productList = async (field = {}) => {
+    console.log('field: ', field);
+    const result = await requestHttp.get(`/product/list${jsonToQueryString(field)}`);
+    if (result.code === ResponseCode.success) {
+      store.dispatch({
+        type: constants.RECEIVE_PRODUCT_LIST,
+        payload: {
+          ...result.data,
+          field
+        }
+      })
+    }
+    return result;
+  }
+
+
+  /**
+   * @todo [请求首页的数据]
+   */
   productHomeList = async (field = {}) => {
     console.log('field: ', field);
     const result = await requestHttp.get(`/product/list`);
     if (result.code === ResponseCode.success) {
       store.dispatch({
-        type: constants.RECEIVE_PRODUCT_LIST,
+        type: constants.RECEIVE_PRODUCT_HOME_LIST,
         payload: {
           ...result.data,
           field

@@ -92,8 +92,8 @@ class Index extends Component {
 
 const select = (state) => ({
   menus: state.product.productTypes,
-  productList: state.product.productList,
-  productListTotal: state.product.productListTotal,
+  productList: state.product.productHomeList,
+  productListTotal: state.product.productHomeListTotal,
   productRandom: state.product.productRandom,
   topicHomeList: state.topic.topicHomeList,
 });

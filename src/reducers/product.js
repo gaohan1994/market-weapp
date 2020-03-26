@@ -4,6 +4,8 @@ import constants from '../constants';
 const INITIAL_STATE = {
   productTypes: [],
   productList: [],
+  productHomeList: [],
+  productHomeListTotal: 0,
   productDetail: {},
   productRandom: [],
   messageList: [],
@@ -100,7 +102,6 @@ export default function product (state = INITIAL_STATE, action) {
         offset === 0 
         ? rows
         : merge([], state.collectList).concat(rows);
-      console.log('nextList:', nextList);
       return {
         ...state,
         collectTotal: count,
@@ -115,6 +116,17 @@ export default function product (state = INITIAL_STATE, action) {
         productTypes: payload.data
       };
     }
+
+    case constants.RECEIVE_PRODUCT_HOME_LIST: {
+      const { payload } = action;
+      const { count, rows } = payload;
+      return {
+        ...state,
+        productHomeListTotal: count,
+        productHomeList: rows,
+      };
+    }
+
     case constants.RECEIVE_PRODUCT_LIST: {
       const { payload } = action;
       const { count, rows, field = {} } = payload;
@@ -124,11 +136,10 @@ export default function product (state = INITIAL_STATE, action) {
         offset === 0 
         ? rows
         : merge([], state.productList).concat(rows);
-      console.log('nextProductList:', nextProductList);
       return {
         ...state,
         productListTotal: count,
-        productList: rows,
+        productList: nextProductList,
       };
     }
     default: {
