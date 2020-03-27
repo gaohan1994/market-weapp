@@ -11,7 +11,7 @@ class Page extends Taro.Component {
         <View 
           className={`${prefix}-item`}
           onClick={() => {
-            Taro.navigateTo({
+            Taro.switchTab({
               url: `/pages/product/productList`
             })
           }}
@@ -23,8 +23,8 @@ class Page extends Taro.Component {
         <View 
           className={`${prefix}-item`}
           onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/topic/topic.main`
+            Taro.switchTab({
+              url: `/pages/topic/topicMain`
             })
           }}
         >
