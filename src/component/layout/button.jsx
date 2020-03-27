@@ -10,7 +10,7 @@ class PublishButton extends Taro.Component {
 
   onClick = () => {
     const result = loginManager.getUserinfo();
-    if (!!result.success) {
+    if (!result.success) {
       Taro.redirectTo({
         url: `/pages/sign/login`
       });
