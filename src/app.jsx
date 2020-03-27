@@ -35,7 +35,8 @@ class App extends Component {
       'pages/product/productList',
       'pages/topic/topicMain',
       'pages/topic/topic',
-      'pages/topic/topic.user'
+      'pages/topic/topic.user',
+      'pages/message/message.list'
     ],
     window: {
       backgroundTextStyle: 'light',

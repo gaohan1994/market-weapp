@@ -37,12 +37,11 @@ class PublishIndex extends Taro.Component {
     return false
   }
 
-  onMenuClick = () => {
+  onMenuClick = (menu) => {
     const result = this.checkAuth();
-    if (result) {
-      Taro.showToast({
-        title: '正在开发中',
-        icon: 'none'
+    if (!!result) {
+      Taro.navigateTo({
+        url: `/pages/message/message.list?type=${menu.type}`
       });
       return;
     }
@@ -66,8 +65,8 @@ class PublishIndex extends Taro.Component {
   render () {
     const { messageList } = this.props;
     const menus = [
-      {id: 1, name: '商品消息', icon: 'http://net.huanmusic.com/market/news.png'},
-      {id: 2, name: '帖子回复', icon: 'http://net.huanmusic.com/market/my.png'},
+      {id: 1, type: 0, name: '商品消息', icon: 'http://net.huanmusic.com/market/news.png'},
+      {id: 2, type: 1, name: '帖子回复', icon: 'http://net.huanmusic.com/market/my.png'},
     ];
     return (
       <View className='container container-color'>

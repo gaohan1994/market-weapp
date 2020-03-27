@@ -15,7 +15,7 @@ class MessageComp extends Taro.Component {
         className={`${prefix}`}
         onClick={() => {
           Taro.navigateTo({
-            url: `/pages/${type === 'topic' ? `topic/topic?id=${message.item_id}` : `product/product?id=${message.item_id}`} `
+            url: `/pages/${Number(type) === 1 ? `topic/topic?id=${message.item_id}` : `product/product?id=${message.item_id}`} `
           });
         }}
       >
