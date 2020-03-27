@@ -3,14 +3,15 @@
  * @Author: Ghan 
  * @Date: 2020-03-26 13:35:22 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-03-26 16:31:28
+ * @Last Modified time: 2020-03-27 10:08:42
  */
 import Taro from '@tarojs/taro'
-import { AtActivityIndicator } from 'taro-ui';
+import { AtActivityIndicator, AtIcon } from 'taro-ui';
 import { View, Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux';
 import invariant from 'invariant';
 import classnames from 'classnames';
+import merge from 'lodash.merge';
 import './index.less'
 import productAction from '../../actions/product';
 import MyList from '../index/components/List';
@@ -26,16 +27,16 @@ const fields = [{
   }
 }, {
   id: 2,
-  title: '价格升序',
+  title: '价格',
   field: {
     order: 'amount',
     by: 'asc'
   }
 }, {
   id: 3,
-  title: '价格降序',
+  title: '时间',
   field: {
-    order: 'amount',
+    order: 'create_time',
     by: 'desc'
   }
 }];
@@ -46,7 +47,7 @@ class Page extends Taro.Component {
 
   state = {
     currentType: undefined,
-    fieldId: 1,
+    currentField: undefined,
     loading: false,
   }
 
@@ -66,12 +67,12 @@ class Page extends Taro.Component {
   fetchData = async (page) => {
     try {
       this.setState({loading: true});
-      const { currentType, fieldId } = this.state;
+      const { currentType, currentField } = this.state;
       const payload = {
         offset: typeof page === 'number' ? page : offset,
         limit: 20,
         ...!!currentType ? {type: currentType.id} : {},
-        ...fields.find(f => f.id === fieldId).field
+        ...!!currentField ? currentField : {},
       }
       const result = await productAction.productList(payload);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
@@ -107,18 +108,30 @@ class Page extends Taro.Component {
   }
 
   onFieldClick = (item) => {
-    if (item.id === 4) {
-      // picker
+    const { currentField } = this.state;
+    if (!!currentField && item.id !== 1 && currentField.order === item.field.order) {
+      // 切换orderby
+      console.log('item: ', item);
+      const nextField = merge({}, {
+        ...item.field,
+        by: currentField.by === 'desc' ? 'asc' : 'desc'
+      });
+      console.log('nextField: ', nextField);
+      this.setState({ currentField: nextField }, () => {
+        this.fetchData(0);
+      });
       return;
     }
-    this.setState({ fieldId: item.id }, () => {
+
+    const nextField = merge({}, item.field);
+    this.setState({ currentField: nextField }, () => {
       this.fetchData(0);
     });
     return;
   }
 
   renderField = () => {
-    const { currentType, fieldId } = this.state;
+    const { currentType, currentField } = this.state;
     const { types } = this.props;
     const range = types && types.map((item) => {
       return item.name;
@@ -126,15 +139,23 @@ class Page extends Taro.Component {
     return (
       <View className={`${prefix}-field`}>
         {fields.map((item) => {
+          const selected = currentField && item.field.order === currentField.order;
           return (
             <View 
               className={classnames(`${prefix}-field-item`, {
-                [`${prefix}-field-item-active`]: item.field && item.id === fieldId
+                [`${prefix}-field-item-active`]: !!selected
               })}
               key={item.title}
               onClick={() => this.onFieldClick(item)}
             >
-              {item.title}
+              <View>{item.title}</View>
+              {item.id !== 1 && (
+                <AtIcon 
+                  value={!!selected && currentField.by === 'desc' ? 'arrow-down' : 'arrow-up'}
+                  color={!!selected ? '#F05065' :'#666666'}
+                  size={13}
+                />
+              )}
             </View>
           );
         })}
@@ -149,10 +170,6 @@ class Page extends Taro.Component {
           <View 
             className={classnames(`${prefix}-field-item`, {
               [`${prefix}-field-item-active`]: !!currentType
-            })}
-            onClick={() => this.onFieldClick({
-              id: 4,
-              title: currentType && currentType.name || '分类',
             })}
           >
             {currentType.name || '分类'}
