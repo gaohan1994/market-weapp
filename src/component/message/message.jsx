@@ -3,6 +3,7 @@ import { View } from '@tarojs/components';
 import dayJs from 'dayjs';
 import { defaultImage } from '../../common/util/common';
 import "./index.less";
+import loginManager from '../../common/util/login.manager';
 
 const prefix = 'c-message';
 
@@ -14,6 +15,13 @@ class MessageComp extends Taro.Component {
       <View 
         className={`${prefix}`}
         onClick={() => {
+          const { success } = loginManager.getUserinfo();
+          if (!success) {
+            Taro.redirectTo({
+              url: '/pages/sign/login'
+            })
+            return;
+          }
           Taro.navigateTo({
             url: `/pages/${Number(type) === 1 ? `topic/topic?id=${message.item_id}` : `product/product?id=${message.item_id}`} `
           });

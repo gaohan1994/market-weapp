@@ -3,7 +3,7 @@
  * @Author: Ghan 
  * @Date: 2020-03-26 13:35:22 
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-03-27 10:08:42
+ * @Last Modified time: 2020-03-30 16:08:01
  */
 import Taro from '@tarojs/taro'
 import { AtActivityIndicator, AtIcon } from 'taro-ui';
@@ -17,6 +17,7 @@ import productAction from '../../actions/product';
 import MyList from '../index/components/List';
 import { ResponseCode } from '../../common/request/config';
 import PublishButton from '../../component/layout/button';
+import loginManager from '../../common/util/login.manager';
 
 const fields = [{
   id: 1,
@@ -201,6 +202,13 @@ class Page extends Taro.Component {
         <PublishButton
           title='发布'
           onClick={() => {
+            const { success } = loginManager.getUserinfo();
+            if (!success) {
+              Taro.redirectTo({
+                url: '/pages/sign/login'
+              })
+              return;
+            }
             Taro.navigateTo({
               url: `/pages/publish/publish`
             })

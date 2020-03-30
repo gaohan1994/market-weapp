@@ -13,6 +13,7 @@ import MyList from '../index/components/List';
 import { getTopicList, getTopicListTotal } from '../../reducers/topic';
 import { ResponseCode } from '../../common/request/config';
 import PublishButton from '../../component/layout/button';
+import loginManager from '../../common/util/login.manager';
 
 const prefix = 'topic';
 
@@ -126,6 +127,13 @@ class Page extends Taro.Component {
         <PublishButton
           title='发布'
           onClick={() => {
+            const { success } = loginManager.getUserinfo();
+            if (!success) {
+              Taro.redirectTo({
+                url: '/pages/sign/login'
+              })
+              return;
+            }
             Taro.navigateTo({
               url: `/pages/publish/publish.topic`
             })

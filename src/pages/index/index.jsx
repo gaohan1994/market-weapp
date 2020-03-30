@@ -11,6 +11,7 @@ import MyList from './components/List';
 import Publish from './components/Publish';
 import SectionHeader from '../../component/layout/section';
 import weixin from '../../common/weixin/weixin';
+import loginManager from '../../common/util/login.manager';
 
 let offset = 0;
 
@@ -32,6 +33,13 @@ class Index extends Component {
   }
 
   onSwiperClick (item) {
+    const { success } = loginManager.getUserinfo();
+    if (!success) {
+      Taro.redirectTo({
+        url: '/pages/sign/login'
+      })
+      return;
+    }
     Taro.navigateTo({
       url: `/pages/product/product?id=${item.id}`
     });

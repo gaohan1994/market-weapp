@@ -155,7 +155,7 @@ class OrderDetail extends Taro.Component {
       title: `${orderDetail.pay_amount || ''}`
     }, {
       key: '下单时间',
-      title: `${dayJs(orderDetail.create_time || '').format('YYYY-DD-MM HH:mm')}`
+      title: `${dayJs(orderDetail.create_time || '').format('YYYY-MM-DD HH:mm:ss')}`
     }, {
       key: '卖家姓名',
       title: `${orderDetail && orderDetail.sellerinfo && orderDetail.sellerinfo.nickName || ''}`,

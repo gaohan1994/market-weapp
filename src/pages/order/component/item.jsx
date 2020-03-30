@@ -17,8 +17,9 @@ class OrderItem extends Taro.Component {
         order_no: order.order_no
       };
       const result = await productAction.orderCancel(payload);
+      console.log('result: ', result);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
-      productAction.orderList({offset: 0, user_id: userinfo.result.user_id});
+      productAction.orderList({offset: 0, user_id: userinfo.user_id});
       Taro.showToast({title: '取消订单', duration: 1000});
     } catch (error) {
       Taro.showToast({
@@ -72,7 +73,7 @@ class OrderItem extends Taro.Component {
      * @param {isSeller} [是否是卖家]
      */
     const that = this;
-    const buttons = order && Number(order.status) === 1 ? [] : [
+    const buttons = order && Number(order.status) === 0 ? [
       {title: '取消订单', onClick: () => {
         console.log('onClick');
         Taro.showModal({
@@ -85,7 +86,7 @@ class OrderItem extends Taro.Component {
           }
         })
       }}
-    ];
+    ] : [];
 
     return (
       <BaseItem

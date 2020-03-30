@@ -117,7 +117,7 @@ class User extends Taro.Component {
           onClick={(menu) => this.onMenuClick(menu)}
           menus={[
             {id: 1, name: '我发布的', icon: `http://net.huanmusic.com/market/distinguished.logo.png`},
-            {id: 2, name: '我卖出的', icon: `http://net.huanmusic.com/market/teachers.answer.png`},
+            // {id: 2, name: '我卖出的', icon: `http://net.huanmusic.com/market/teachers.answer.png`},
             {id: 5, name: '我的帖子', icon: `http://net.huanmusic.com/market/credit.png`},
           ]}
         />
@@ -125,7 +125,7 @@ class User extends Taro.Component {
           title='买在微易'
           onClick={(menu) => this.onMenuClick(menu)}
           menus={[
-            {id: 3, name: `我买到的 ${orderTotal}`, icon: `http://net.huanmusic.com/market/analysis.png`},
+            {id: 3, name: `我的订单 ${orderTotal}`, icon: `http://net.huanmusic.com/market/analysis.png`},
             {id: 4, name: `我收藏的 ${collectTotal}`, icon: `http://net.huanmusic.com/market/collection.png`},
           ]}
         />
