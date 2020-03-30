@@ -110,7 +110,7 @@ class ProductAction {
     return result;
   }
 
-  createOrder = async (product) => {
+  createOrder = async (product, params) => {
     const userinfo = loginManager.getUserinfo();
     if (!userinfo.success) {
       return { code: ResponseCode.error, msg: '请先登录' };
@@ -122,11 +122,17 @@ class ProductAction {
     const payload = {
       user_id: userinfo.result.user_id,
       product_id: product.id,
-      random_key: Math.round(new Date() / 1000)
+      random_key: Math.round(new Date() / 1000),
+      ...params
     };
     console.log('payload: ', payload);
     const result = await requestHttp.post('/order/create', payload);
     console.log('result', result);
+    return result;
+  }
+
+  orderConfirm = async (params) => {
+    const result = await requestHttp.post(`/order/confirm`, params);
     return result;
   }
 

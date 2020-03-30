@@ -4,21 +4,16 @@ import numeral from 'numeral';
 import invariant from 'invariant';
 import { defaultImage } from '../../../common/util/common';
 import BaseItem from '../../../component/item/BaseItem';
-import loginManager from '../../../common/util/login.manager';
 import productAction from '../../../actions/product';
 import { ResponseCode } from '../../../common/request/config';
 
 class OrderItem extends Taro.Component {
-
-  defaultProps = {
-    order: {}
-  }
-
+  
   cancelOrder = async () => {
     try {
       const { order, userinfo } = this.props;
       const payload = {
-        user_id: userinfo.result.user_id,
+        user_id: userinfo.user_id,
         order_no: order.order_no
       };
       const result = await productAction.orderCancel(payload);
@@ -72,19 +67,20 @@ class OrderItem extends Taro.Component {
   }
 
   render () {
-    const { order, userinfo } = this.props;
+    const { order } = this.props;
     /**
      * @param {isSeller} [是否是卖家]
      */
-    const isSeller = userinfo.user_id === order.seller_id;
-    const buttons = order && Number(order.status) === 3 ? [] : [
+    const that = this;
+    const buttons = order && Number(order.status) === 1 ? [] : [
       {title: '取消订单', onClick: () => {
+        console.log('onClick');
         Taro.showModal({
           title: '提示',
           content: '确定取消订单吗',
           success: (result) => {
             if (result.confirm) {
-              this.cancelOrder();
+              that.cancelOrder();
             }
           }
         })
@@ -102,7 +98,7 @@ class OrderItem extends Taro.Component {
         contentTitle={order.product_name}
         contentDetail='共1件商品 合计：'
         contentMater={numeral(order.pay_amount || 0).format('0.00')}
-        image={order.product_picture && order.product_picture[0] || defaultImage}
+        image={order && order.product_picture || defaultImage}
         buttons={buttons}
       />
     );

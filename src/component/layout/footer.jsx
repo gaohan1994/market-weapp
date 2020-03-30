@@ -7,7 +7,7 @@ const prefix = 'product';
 
 class Page extends Taro.Component {
   render () {
-    const { onItemClick, items, button, buttonClick, type } = this.props;
+    const { onItemClick, items = [], button, buttonClick, type } = this.props;
 
     if (type === 'topic') {
       return (

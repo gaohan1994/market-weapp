@@ -110,7 +110,11 @@ class BaseItem extends Taro.Component {
                 <View
                   key={button.title}
                   className={`${prefix}-bar-button-dash`}
-                  onClick={button.onClick}
+                  onClick={() => {
+                    if (button.onClick) {
+                      button.onClick();
+                    }
+                  }}
                 >
                   {button.title}
                 </View>

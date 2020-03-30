@@ -22,25 +22,13 @@ class ConfirmModal extends Taro.Component {
 
   async onConfirm () {
     try {
-      const { onConfirm, product } = this.props;
+      const { onConfirm } = this.props;
 
       if (onConfirm) {
         onConfirm();
+        this.onCancel();
         return;
       }
-
-      Taro.showLoading({title: '下单中~'});
-      const result = await productAction.createOrder(product);
-      Taro.hideLoading();
-      invariant(result.code === ResponseCode.success, result.msg || ' ');
-
-      this.onCancel();
-      Taro.showToast({title: '下单成功', duration: 1000});
-      setTimeout(() => {
-        Taro.navigateTo({
-          url: `/order/order?id=${result.data.id}`
-        });
-      }, 1000);
     } catch (error) {
       Taro.hideLoading();
       Taro.showToast({
@@ -51,16 +39,23 @@ class ConfirmModal extends Taro.Component {
   }
   
   setContent () {
-    const { product } = this.props;
+    const { product, phone } = this.props;
     return (
       <View>
         <ListRow 
           title='商品名字' 
           extraText={product.title && product.title.length > 5 ? product.title.slice(0, 5) : product.title}
+          hasBorder={false} 
         />
         <ListRow 
           title='商品价格' 
           extraText={`￥ ${numeral(product.amount).format('0.00')}`}
+          extraTextColor='#FF7332'
+          hasBorder={false}
+        />
+        <ListRow 
+          title='联系方式' 
+          extraText={phone}
           extraTextColor='#FF7332'
           hasBorder={false}
         />

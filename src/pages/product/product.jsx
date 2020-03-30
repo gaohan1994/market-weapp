@@ -76,11 +76,31 @@ class ProductDetail extends Taro.Component {
   }
 
   async onCart () {
-    const { productDetail } = this.props;
-    await productAction.cartProduct(productDetail);
-    Taro.navigateTo({
-      url: '/pages/pay/cart'
-    });
+    try {
+      const { productDetail } = this.props;
+      Taro.showLoading();
+      const { id } = this.$router.params;  
+      const result = await productAction.productDetail({id});  
+      Taro.hideLoading();
+      invariant(result.code === ResponseCode.success, result.msg || ' ');
+
+      if (result.data.status !== 1) {
+        Taro.showToast({
+          title: '该商品已被他人抢先一步，再去逛逛吧',
+          icon: 'none'
+        });
+        return;
+      }
+      await productAction.cartProduct(productDetail);
+      Taro.navigateTo({
+        url: '/pages/pay/cart'
+      });
+    } catch (error) {
+      Taro.showToast({
+        title: error.message,
+        icon: 'none'
+      });
+    }
   }
 
   async onItemClick (item) {

@@ -20,6 +20,7 @@ class Publish extends Component {
     amount: '',
     trans_type: '0',
     files: [],
+    phone: '',
   }
 
   async componentDidShow () {
@@ -44,11 +45,9 @@ class Publish extends Component {
   }
 
   onChange (files) {
-    console.log('files: ', files);
     this.setState({files})
   }
   onFail (mes) {
-    console.log('mes: ', mes);
     Taro.atMessage({
       'message': `${mes.message}`,
       'type': 'error',
@@ -60,6 +59,10 @@ class Publish extends Component {
 
   changeSelector = (e) => {
     this.setState({typeValue: e.detail.value});
+  }
+
+  changePhone = (value) => {
+    this.setState({phone: value});
   }
 
   reset = () => {
@@ -82,9 +85,11 @@ class Publish extends Component {
         amount,
         trans_type,
         files,
+        phone,
       } = this.state;
       const { productTypes } = this.props;
       invariant(!!title, '请输入宝贝标题');
+      invariant(!!phone, '请输入手机号码');
       invariant(!!description, '请输入宝贝详情');
       invariant(!!amount, '请输入宝贝价格');
       invariant(files.length > 0, '请上传宝贝图片');
@@ -101,17 +106,18 @@ class Publish extends Component {
         pics: pics,
         user_id: userinfo.result.user_id,
         trans_type: Number(trans_type),
+        phone,
       };
       const result = await productAction.productAdd(payload);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
       Taro.hideLoading();
       Taro.showToast({ title: '发布宝贝成功！', duration: 1000 });
       this.reset();
-      // setTimeout(() => {
-      //   Taro.navigateTo({
-      //     url: '/publish/result'
-      //   });
-      // }, 1000);
+      setTimeout(() => {
+        Taro.navigateTo({
+          url: `/pages/product/product?id=${result.data.id}`
+        });
+      }, 1000);
     } catch (error) {
       Taro.hideLoading();
       Taro.showToast({
@@ -139,7 +145,7 @@ class Publish extends Component {
   }
 
   renderForms = () => {
-    const { typeValue, amount, trans_type } = this.state;
+    const { typeValue, amount, trans_type, phone } = this.state;
     const { productTypes, productTypesSelector } = this.props;
     return (
       <View>
@@ -165,12 +171,23 @@ class Publish extends Component {
         </Picker>
         <FormRow
           title='价格'
+          main
           isInput
-          hasBorder={false}
+          inputType='digit'
           inputName='member.name'
           inputValue={amount}
           inputPlaceHolder='请输入宝贝价格'
           inputOnChange={(value) => this.handleChange('amount', value)}
+        />
+        <FormRow
+          title='手机号码'
+          main
+          isInput
+          hasBorder={false}
+          inputName='member.phone'
+          inputValue={phone}
+          inputPlaceHolder='请输入您的手机号码'
+          inputOnChange={(value) => this.changePhone(value)}
         />
       </View>
     );

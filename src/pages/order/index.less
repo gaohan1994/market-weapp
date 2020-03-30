@@ -2,9 +2,9 @@
 
 .box {
   background-color: #fff;
-  width: 690px;
+  width: 710px;
   .padding(40px, tb);
-  .margin(30px, l);
+  .margin(20px, l);
   box-shadow:3px 15px 22px 3px rgba(107,146,244,0.05);
   border-radius:10px;
 }
@@ -13,7 +13,7 @@
 .@{prefix} {
 
   &-status {
-    .theme-background;
+    background: linear-gradient(180deg,#F05065 0%,rgba(253,167,92,1) 100%);
     width: 100%;
     height: 260px;
     .flex(center, center, row);
@@ -30,7 +30,7 @@
     .padding(30px, lr);
     .flex(center, flex-start, row);
     &-text {
-      .margin(30px, l);
+      .margin(20px, l);
       font-size: 26px;
       color: #666666;
     }
@@ -52,5 +52,13 @@
   &-order {
     .box;
     .margin(20px, t);
+
+    &-item {
+      .flex(center, space-between, row);
+      font-size: 24px;
+      color: #666666;
+      height: 60px;
+      .padding(20px, lr);
+    }
   }
 }

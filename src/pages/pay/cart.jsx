@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
 import invariant from 'invariant';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 import numeral from 'numeral';
 import dayJs from 'dayjs';
 import { connect } from '@tarojs/redux';
@@ -21,7 +21,8 @@ class Cart extends Taro.Component {
   }
 
   state = {
-    visible: false
+    visible: false,
+    phone: '',
   }
 
   config = {
@@ -29,11 +30,41 @@ class Cart extends Taro.Component {
   }
 
   onBuy = () => {
-    this.changeValue(true);
+    try {
+      const { phone } = this.state;
+      invariant(!!phone, '请先输入您的联系方式');
+      this.changeValue(true); 
+    } catch (error) {
+      Taro.showToast({
+        title: error.message,
+        icon: 'none'
+      });
+    }
   }
 
   changeValue (visible) {
     this.setState({visible});
+  }
+
+  inputOnChange = (value) => {
+    this.setState({phone: value});
+  }
+
+  onConfirm = async () => {
+    const { phone } = this.state;
+    const { cartProduct: product } = this.props;
+    Taro.showLoading({title: '下单中~'});
+    const payload = { phone };
+    const result = await productAction.createOrder(product, payload);
+    Taro.hideLoading();
+    invariant(result.code === ResponseCode.success, result.msg || ' ');
+
+    Taro.showToast({title: '下单成功', duration: 1000});
+    setTimeout(() => {
+      Taro.redirectTo({
+        url: `/order/order.detail?order_no=${result.data.order_no}`
+      });
+    }, 1000);
   }
 
   setFooter () {
@@ -63,7 +94,7 @@ class Cart extends Taro.Component {
   }
 
   render () {
-    const { visible } = this.state;
+    const { visible, phone } = this.state;
     const { cartProduct } = this.props;
     return (
       <View className='container container-color'>
@@ -88,6 +119,16 @@ class Cart extends Taro.Component {
             title='交易方式'
             extraText='线下交易'
             extraTextColor='#FF7332'
+          />
+          <FormRow
+            title='联系方式'
+            main
+            isInput
+            inputValue={phone}
+            type='number'
+            inputPlaceHolder='请输入您的手机号'
+            inputOnChange={(value) => this.inputOnChange(value)}
+            extraTextColor='#FF7332'
             hasBorder={false}
           />
         </View>
@@ -95,8 +136,10 @@ class Cart extends Taro.Component {
         {this.setFooter()}
         <ConfrimModal
           isOpened={visible}
+          phone={phone}
           onCancel={() => this.changeValue(false)}
           product={cartProduct}
+          onConfirm={() => this.onConfirm()}
         />
       </View>
     )

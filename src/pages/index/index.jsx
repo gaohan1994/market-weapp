@@ -72,7 +72,7 @@ class Index extends Component {
           <SectionHeader
             title='跳蚤市场'
             onClick={() => {
-              Taro.navigateTo({
+              Taro.switchTab({
                 url: `/pages/product/productList`
               })
             }}
