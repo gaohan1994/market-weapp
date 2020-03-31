@@ -62,7 +62,7 @@ class Cart extends Taro.Component {
     Taro.showToast({title: '下单成功', duration: 1000});
     setTimeout(() => {
       Taro.redirectTo({
-        url: `/order/order.detail?order_no=${result.data.order_no}`
+        url: `/pages/order/order.detail?order_no=${result.data.order_no}`
       });
     }, 1000);
   }

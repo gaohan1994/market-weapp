@@ -124,6 +124,13 @@ class OrderDetail extends Taro.Component {
       <BaseItem
         title={order && order.productinfo && order.productinfo.title || ''}
         subTitle={order && order.productinfo && order.productinfo.description || ''}
+        contentClick={() => {
+          if (order && order.productinfo) {
+            Taro.navigateTo({
+              url: `/pages/product/product?id=${order.productinfo.id}`
+            })
+          }
+        }}
         pad
         type='images'
         contentMater={numeral(order.pay_amount || 0).format('0.00')}
