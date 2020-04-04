@@ -299,20 +299,18 @@ class ProductAction {
   }
 
   productDetail = async (params) => {
-    const result = await requestHttp.get(`/product/detail${jsonToQueryString(params)}`);
-
     const userinfo = loginManager.getUserinfo();
+    const payload = {
+      ...params,
+      user_id: userinfo.result.user_id
+    }
+    const result = await requestHttp.get(`/product/detail${jsonToQueryString(payload)}`);
+
     let collect = {};
-    let like = {};
     if (userinfo.success) {
       const collectResult = await this.fetchProductCollect({user_id: userinfo.result.user_id, product_id: params.id});
       if (collectResult.code === ResponseCode.success) {
         collect = collectResult.data
-      }
-
-      const likeResult = await this.fetchItemLike({user_id: userinfo.result.user_id, item_id: params.id, type: 0});
-      if (likeResult.code === ResponseCode.success) {
-        like = likeResult.data
       }
     }
     if (result.code === ResponseCode.success) {
@@ -321,7 +319,6 @@ class ProductAction {
         payload: {
           ...result.data,
           collect,
-          like
         }
       });
     }

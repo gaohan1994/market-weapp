@@ -11,9 +11,13 @@ import { jsonToQueryString } from '../common/util/common';
 class TopicAction {
 
   productDetail = async (params) => {
-    const result = await requestHttp.get(`/topic/detail${jsonToQueryString(params)}`);
-
     const userinfo = loginManager.getUserinfo();
+    const payload = {
+      ...params,
+      user_id: userinfo.result.user_id
+    };
+    const result = await requestHttp.get(`/topic/detail${jsonToQueryString(payload)}`);
+
     let collect = {};
     if (userinfo.success) {
       const collectResult = await productAction.fetchProductCollect({user_id: userinfo.result.user_id, product_id: params.id, type: 1});

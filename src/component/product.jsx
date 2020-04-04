@@ -137,7 +137,10 @@ class Product extends Taro.Component {
                 color='#828E99'
               />
             )}
-            <View className={`${prefix}-user-name`}>{product.userinfo && product.userinfo.nickName}</View>
+            <View className={`${prefix}-detail-box`}>
+              <View className={`${prefix}-user-name`}>{product.userinfo && product.userinfo.nickName}</View>
+              <View className={`${prefix}-user-name`}>{product.like_count || 0}人喜欢</View>
+            </View>
           </View>
         )}
         

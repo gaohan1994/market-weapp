@@ -117,6 +117,27 @@ class Page extends Taro.Component {
         }, 1000);
         return;
       }
+      if (item.key === 3) {
+        const payload = { item_id: productDetail.id, user_id: userinfo.user_id, type: 1 };
+        const result = await productAction.fetchItemLike(payload);
+        invariant(result.code === ResponseCode.success, result.msg || ' ');
+
+        if (productDetail.like && !!productDetail.like.id) {
+          Taro.showToast({
+            title: '取消点赞',
+            icon: 'none'
+          });
+        } else {
+          Taro.showToast({
+            title: '点赞成功',
+          });
+        }
+
+        setTimeout(() => {
+          this.fetchData(productDetail.id);
+        }, 1000);
+        return;
+      }
     } catch (error) {
       Taro.showToast({
         title: error.message,
@@ -180,6 +201,7 @@ class Page extends Taro.Component {
         title={productDetail && productDetail.userinfo && productDetail.userinfo.nickName}
         subTitle={`${dayJs(productDetail.create_time || '').format('YYYY.MM.DD')} 发布`}
         isRenderContent={false}
+        mater={`${productDetail && productDetail.like_count || 0}人喜欢`}
       />
     );
   }
@@ -259,6 +281,13 @@ class Page extends Taro.Component {
         icon: productDetail && productDetail.collect && productDetail.collect.collect ? 'heart-2' : 'heart',
         color: productDetail && productDetail.collect && productDetail.collect.collect ? '#DF394D' : ''
       },
+      {
+        key: 3,
+        title: productDetail && productDetail.like && !!productDetail.like.id ? '取消点赞' : '点赞',
+        iconUrl:  productDetail && productDetail.like && !!productDetail.like.id 
+        ? '//net.huanmusic.com/market/like.selected.png'
+        : '//net.huanmusic.com/market/like.png'
+      }
     ];
     return (
       <Footer

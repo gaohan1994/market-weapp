@@ -35,11 +35,19 @@ class Page extends Taro.Component {
                       className={`${prefix}-footer-content-item`}
                       onClick={() => onItemClick(item)}
                     >
-                      <AtIcon 
-                        value={item.icon}
-                        size={15}
-                        color={item.color || '#666666'}
-                      />  
+                      {!!item.iconUrl ? (
+                        <View 
+                          className={`${prefix}-footer-content-item-icon`}
+                          style={`background-image: url(${item.iconUrl})`}
+                        />
+                      ) : (
+                        <AtIcon 
+                          value={item.icon}
+                          size={15}
+                          color={item.color || '#666666'}
+                        />
+                      )}
+                        
                       <View className={`${prefix}-footer-content-item-title`}>{item.title}</View>
                     </View>
                   )
@@ -62,11 +70,18 @@ class Page extends Taro.Component {
                   className={`${prefix}-footer-content-item`}
                   onClick={() => onItemClick(item)}
                 >
-                  <AtIcon 
-                    value={item.icon}
-                    size={15}
-                    color={item.color || '#666666'}
-                  />  
+                  {!!item.iconUrl ? (
+                    <View 
+                      className={`${prefix}-footer-content-item-icon`}
+                      style={`background-image: url(${item.iconUrl})`}
+                    />
+                  ) : (
+                    <AtIcon 
+                      value={item.icon}
+                      size={15}
+                      color={item.color || '#666666'}
+                    />
+                  )}
                   <View className={`${prefix}-footer-content-item-title`}>{item.title}</View>
                 </View>
               )
