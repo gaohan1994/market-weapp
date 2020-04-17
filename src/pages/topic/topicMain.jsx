@@ -5,7 +5,6 @@ import { View, Picker } from '@tarojs/components'
 import { AtActivityIndicator, AtIcon } from 'taro-ui'
 import classnames from 'classnames';
 import merge from 'lodash.merge';
-import TabsSwitch from './component/tab.switch';
 import './index.less'
 import '../product/index.less';
 import productAction from '../../actions/product';
@@ -41,7 +40,6 @@ class Page extends Taro.Component {
   state = {
     currentType: undefined,
     currentField: undefined,
-    currentIndex: 0,
     loading: false,
   }
   config = {
@@ -64,14 +62,12 @@ class Page extends Taro.Component {
   fetchData = async (page) => {
     try {
       this.setState({loading: true});
-      const { types } = this.props;
-      const { currentType, currentField, currentIndex } = this.state;
+      const { currentType, currentField } = this.state;
       const payload = {
         offset: typeof page === 'number' ? page : offset,
         limit: 20,
         ...!!currentType ? {type: currentType.id} : {},
         ...!!currentField ? currentField : {},
-        type: types[currentIndex].id
       }
       const result = await TopicAction.topicList(payload);
       invariant(result.code === ResponseCode.success, result.msg || ' ');
@@ -91,13 +87,6 @@ class Page extends Taro.Component {
       });
     }
   }
-
-  handleClick = (params) => {
-    this.setState({currentIndex: params}, () => {
-      this.fetchData(0);
-    });
-  }
-
 
   onPickerCancel = () => {
     this.setState({
