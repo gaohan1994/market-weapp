@@ -167,7 +167,7 @@ class Publish extends Component {
         <AtTextarea
           height={400}
           value={this.state.description}
-          onChange={(value) => this.handleChange('description', value)}
+          onChange={({detail: {value}}) => this.handleChange('description', value)}
           placeholderStyle='font-size: 12px; color: #C6C6C6;'
           maxLength={200}
           placeholder='在这里详细描述你想说的话吧...'
