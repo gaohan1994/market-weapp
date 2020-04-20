@@ -21,7 +21,7 @@
 
   &-pad {
     width: 750 - @item-pad * 2 !important;
-    .margin(@item-pad, l);  
+    .margin(@item-pad, l);
   }
 
   &-header {
@@ -33,7 +33,7 @@
       position: absolute;
       top: 50%;
       right: @item-pad;
-      color: #FF7332;
+      color: #ff7332;
       font-size: 35px;
       font-weight: bold;
       transform: translateY(-50%);
@@ -113,11 +113,11 @@
         display: flex;
         flex: 1;
         font-size: 26px;
-        color: #2B2F33;
+        color: #2b2f33;
       }
       &-name {
         font-size: 26px;
-        color: #2B2F33;
+        color: #2b2f33;
       }
       &-detail {
         .margin(@item-pad, tb);
@@ -130,7 +130,7 @@
       }
       &-mater {
         font-size: 30px;
-        color: #FF7332;
+        color: #ff7332;
       }
     }
   }
@@ -150,9 +150,9 @@
       &-dash {
         width: 140px;
         height: 50px;
-        border: 1px solid rgba(77,154,251,1);
+        border: 1px solid rgba(77, 154, 251, 1);
         border-radius: 5px;
-        color: #4D9AFB;
+        color: #4d9afb;
         font-size: 24px;
         .flex(center, center);
         .margin(@item-pad, l);
@@ -170,20 +170,21 @@
     }
     &-user {
       .flex(center, flex-start, row);
+      position: relative;
       &-name {
         font-size: 24px;
-        color: #2B2F33;
+        color: #2b2f33;
       }
       &-time {
         font-size: 22px;
-        color: #CCCCCC;
+        color: #cccccc;
         .margin(30px, l);
       }
       &-avator {
         width: @message-avator;
         height: @message-avator;
         border-radius: @item-pad / 2;
-        .bg;     
+        .bg;
         .margin(@item-pad, r);
       }
     }
@@ -194,7 +195,26 @@
       flex-direction: column;
       &-content {
         font-size: 24px;
-        color: #2B2F33;
+        color: #2b2f33;
+      }
+    }
+
+    &-like {
+      position: absolute;
+      right: @item-pad;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      width: @item-pad * 3;
+      height: @item-pad * 3;
+      .flex(center, center, row);
+      font-size: 22px;
+      color: #666666;
+      &-text {
+        .margin(4px, l);
+      }
+      &-sub {
+        right: 0px;
       }
     }
 
@@ -204,14 +224,16 @@
       .margin(@message-avator + @item-pad, l);
       border-radius: 8px;
       overflow: hidden;
-      background-color: #F2F2F2;
+      background-color: #f2f2f2;
       &-item {
+        position: relative;
         .padding(@item-pad);
         display: flex;
         flex-direction: column;
         font-size: 24px;
-        color: #2B2F33;
+        color: #2b2f33;
         &-user {
+          position: relative;
           display: flex;
           flex-direction: row;
           align-items: flex-end;
@@ -222,7 +244,7 @@
         }
         &-time {
           font-size: 22px;
-          color: #CCCCCC;
+          color: #cccccc;
           .margin(@item-pad, l);
         }
         &-content {

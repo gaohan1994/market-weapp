@@ -1,38 +1,37 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Picker } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { AtInput, AtTextarea, AtButton, AtImagePicker } from 'taro-ui';
-import invariant from 'invariant';
-import './publish.less'
-import productAction from '../../actions/product';
-import topicAction from '../../actions/topic';
-import { ResponseCode } from '../../common/request/config';
-import loginManager from '../../common/util/login.manager';
-import FormRow from '../../component/row';
+import Taro, { Component } from "@tarojs/taro";
+import { View, Picker } from "@tarojs/components";
+import { connect } from "@tarojs/redux";
+import { AtInput, AtTextarea, AtButton, AtImagePicker } from "taro-ui";
+import invariant from "invariant";
+import "./publish.less";
+import productAction from "../../actions/product";
+import topicAction from "../../actions/topic";
+import { ResponseCode } from "../../common/request/config";
+import loginManager from "../../common/util/login.manager";
+import FormRow from "../../component/row";
 
-const prefix = 'publish';
+const prefix = "publish";
 class Publish extends Component {
-
   state = {
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     typeValue: 0,
-    files: [],
-  }
+    files: []
+  };
 
-  async componentDidShow () {
+  async componentDidShow() {
     const userinfo = await loginManager.getUserinfo();
     productAction.topicTypes();
     if (!userinfo.success) {
       Taro.navigateTo({
-        url: '/pages/sign/login'
+        url: "/pages/sign/login"
       });
     }
   }
 
   config = {
-    navigationBarTitleText: '发布帖子'
-  }
+    navigationBarTitleText: "发布帖子"
+  };
   handleChange = (key, value) => {
     this.setState(prevState => {
       return {
@@ -40,44 +39,39 @@ class Publish extends Component {
         [key]: value
       };
     });
-  }
+  };
 
-  onChange (files) {
-    this.setState({files})
+  onChange(files) {
+    this.setState({ files });
   }
-  onFail (mes) {
+  onFail(mes) {
     Taro.atMessage({
-      'message': `${mes.message}`,
-      'type': 'error',
+      message: `${mes.message}`,
+      type: "error"
     });
   }
 
-  changeSelector = (e) => {
-    this.setState({typeValue: e.detail.value});
-  }
+  changeSelector = e => {
+    this.setState({ typeValue: e.detail.value });
+  };
 
   reset = () => {
     this.setState({
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       typeValue: 0,
-      files: [],
+      files: []
     });
-  }
+  };
 
   onSubmit = async () => {
     try {
-      const { 
-        title,
-        description,
-        typeValue,
-        files,
-      } = this.state;
+      const { title, description, typeValue, files } = this.state;
       const { productTypes } = this.props;
-      invariant(!!title, '请输入帖子标题');
-      invariant(!!description, '请输入帖子详情');
+      invariant(!!title, "请输入帖子标题");
+      invariant(!!description, "请输入帖子详情");
       // invariant(files.length > 0, '请上传帖子图片');
-      Taro.showLoading({ title: '上传图片中~', mask: true });
+      Taro.showLoading({ title: "上传图片中~", mask: true });
 
       const currentType = productTypes[typeValue];
       let pics = [];
@@ -94,9 +88,9 @@ class Publish extends Component {
         type: currentType.id
       };
       const result = await topicAction.topicAdd(payload);
-      invariant(result.code === ResponseCode.success, result.msg || ' ');
+      invariant(result.code === ResponseCode.success, result.msg || " ");
       Taro.hideLoading();
-      Taro.showToast({ title: '发布帖子成功！', duration: 1000 });
+      Taro.showToast({ title: "发布帖子成功！", duration: 1000 });
       this.reset();
       setTimeout(() => {
         Taro.redirectTo({
@@ -107,10 +101,10 @@ class Publish extends Component {
       Taro.hideLoading();
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
-  }
+  };
 
   renderImages = () => {
     const { files } = this.state;
@@ -127,7 +121,7 @@ class Publish extends Component {
         )}
       </View>
     );
-  }
+  };
 
   renderForms = () => {
     const { typeValue } = this.state;
@@ -142,15 +136,17 @@ class Publish extends Component {
         >
           <FormRow
             title='分类'
-            extraText={productTypes[typeValue] && productTypes[typeValue].name || ''}
+            extraText={
+              (productTypes[typeValue] && productTypes[typeValue].name) || ""
+            }
             arrow='right'
           />
         </Picker>
       </View>
     );
-  }
+  };
 
-  render () {
+  render() {
     return (
       <View className='container container-color'>
         <View style='background-color: #ffffff'>
@@ -160,14 +156,16 @@ class Publish extends Component {
             type='text'
             placeholder='请输入你想分享的的标题'
             value={this.state.title}
-            onChange={(value) => this.handleChange('title', value)}
-          />  
+            onChange={value => this.handleChange("title", value)}
+          />
         </View>
-        
+
         <AtTextarea
           height={400}
           value={this.state.description}
-          onChange={({detail: {value}}) => this.handleChange('description', value)}
+          onChange={({ detail: { value } }) =>
+            this.handleChange("description", value)
+          }
           placeholderStyle='font-size: 12px; color: #C6C6C6;'
           maxLength={200}
           placeholder='在这里详细描述你想说的话吧...'
@@ -183,9 +181,8 @@ class Publish extends Component {
           确认发布
         </AtButton>
       </View>
-    )
+    );
   }
-
 }
 
 // #region 导出注意
@@ -195,12 +192,12 @@ class Publish extends Component {
 //
 // #endregion
 
-const select = (state) => {
-  const productTypes =  state.topic.topicTypes;
-  const productTypesSelector = productTypes.map((type) => type.name);
+const select = state => {
+  const productTypes = state.topic.topicTypes;
+  const productTypesSelector = productTypes.map(type => type.name);
   return {
     productTypes,
-    productTypesSelector,
+    productTypesSelector
   };
 };
 
