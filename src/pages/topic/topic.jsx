@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import invariant from "invariant";
 import { View, Swiper, SwiperItem } from "@tarojs/components";
-import { AtLoadMore } from "taro-ui";
+import { AtLoadMore, AtActivityIndicator } from "taro-ui";
 import dayJs from "dayjs";
 import { connect } from "@tarojs/redux";
 import productAction from "../../actions/product";
@@ -174,14 +174,19 @@ class Page extends Taro.Component {
     }
   }
 
-  async messageList(page) {
+  async changeOrder(order) {
+    this.messageList(0, order);
+  }
+
+  async messageList(page, order = "create_time") {
     try {
       const { id } = this.$router.params;
       this.setState({ messageLoading: true });
       const result = await productAction.messageList({
         item_id: id,
         type: 1,
-        offset: typeof page === "number" ? page : offset
+        offset: typeof page === "number" ? page : offset,
+        order
       });
       invariant(result.code === ResponseCode.success, result.msg || " ");
       this.setState({ messageLoading: false });
@@ -352,10 +357,17 @@ class Page extends Taro.Component {
       <View className={`${prefix}`}>
         {this.setSeller()}
         {this.setArticle()}
-        <MyRow title='留言板' />
+        <MyRow
+          title='留言板'
+          setSide
+          sideFetch={order => this.changeOrder(order)}
+        />
         <View className={`${prefix}-message`}>
           {messageTotal === 0 && <ListEmpty />}
-          {messageList &&
+          {!!messageLoading ? (
+            <AtActivityIndicator mode='center' size='large' />
+          ) : (
+            messageList &&
             messageList.map(item => {
               return (
                 <MessageItem
@@ -364,8 +376,9 @@ class Page extends Taro.Component {
                   onClick={() => this.onMessageClick(item)}
                 />
               );
-            })}
-          {messageTotal > 0 && (
+            })
+          )}
+          {!messageLoading && messageTotal > 0 && (
             <AtLoadMore
               onClick={() => this.messageList()}
               status={status}
