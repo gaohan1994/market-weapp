@@ -2,7 +2,7 @@
  * @Author: Ghan
  * @Date: 2020-04-17 15:28:36
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-04-17 17:05:23
+ * @Last Modified time: 2020-04-21 14:39:04
  */
 import Taro, { useState } from "@tarojs/taro";
 import { View } from "@tarojs/components";
@@ -12,6 +12,8 @@ import "../publish/publish.less";
 import FormRow from "../../component/row";
 import loginManager from "../../common/util/login.manager";
 import productAction from "../../actions/product";
+import api from "./api";
+import { ResponseCode } from "../../common/request/config";
 
 const prefix = "publish";
 
@@ -29,14 +31,17 @@ function DonateAdd() {
       const userinfo = await loginManager.getUserinfo();
       const pics =
         files.length > 0 ? await productAction.uploadImages(files) : [];
-      const paylaod = {
+      const payload = {
         title,
         description,
         phone,
         user_id: userinfo.result.user_id,
         pics
       };
-      // const result = await
+      const result = await api.donateAdd(payload);
+      invariant(result.code === ResponseCode.success, result.msg || " ");
+      Taro.showToast({ title: "发布成功!" });
+      Taro.navigateBack({});
     } catch (error) {
       Taro.showToast({
         title: error.message,
