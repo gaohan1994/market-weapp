@@ -13,6 +13,7 @@ export const HTTP_STATUS = {
 };
 
 export const ResponseCode = {
-  success: 'success',
-  error: 'error',
+  success: "success",
+  error: "error",
+  auth: "auth"
 };
