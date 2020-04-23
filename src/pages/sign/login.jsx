@@ -2,7 +2,7 @@
  * @Author: Ghan
  * @Date: 2019-11-01 10:07:05
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-04-23 14:11:56
+ * @Last Modified time: 2020-04-23 14:13:30
  */
 import Taro, { useState } from "@tarojs/taro";
 import { View, Button, Input } from "@tarojs/components";
@@ -68,7 +68,7 @@ function Login() {
         return;
       }
       invariant(result.code === ResponseCode.success, result.msg || "登录失败");
-      const userinfo = await LoginManager.saveUserinfo(result.data);
+      await LoginManager.saveUserinfo(result.data);
       Taro.showToast({
         title: "登录成功！"
       });

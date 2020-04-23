@@ -1,40 +1,45 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Picker } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { AtInput, AtTextarea, AtButton, AtImagePicker, AtMessage } from 'taro-ui';
-import invariant from 'invariant';
-import './publish.less'
-import '../index/index.less';
-import productAction from '../../actions/product';
-import FormRow from '../../component/row';
-import { ResponseCode } from '../../common/request/config';
-import loginManager from '../../common/util/login.manager';
+import Taro, { Component } from "@tarojs/taro";
+import { View, Picker } from "@tarojs/components";
+import { connect } from "@tarojs/redux";
+import {
+  AtInput,
+  AtTextarea,
+  AtButton,
+  AtImagePicker,
+  AtMessage
+} from "taro-ui";
+import invariant from "invariant";
+import "./publish.less";
+import "../index/index.less";
+import productAction from "../../actions/product";
+import FormRow from "../../component/row";
+import { ResponseCode } from "../../common/request/config";
+import loginManager from "../../common/util/login.manager";
 
-const prefix = 'publish';
+const prefix = "publish";
 class Publish extends Component {
-
   state = {
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     typeValue: 0,
-    amount: '',
-    trans_type: '0',
+    amount: "",
+    trans_type: "0",
     files: [],
-    phone: '',
-  }
+    phone: ""
+  };
 
-  async componentDidShow () {
+  async componentDidShow() {
     const userinfo = await loginManager.getUserinfo();
     if (!userinfo.success) {
       Taro.navigateTo({
-        url: '/pages/sign/login'
+        url: "/pages/sign/login"
       });
     }
   }
 
   config = {
-    navigationBarTitleText: '发布宝贝'
-  }
+    navigationBarTitleText: "发布宝贝"
+  };
   handleChange = (key, value) => {
     this.setState(prevState => {
       return {
@@ -42,58 +47,58 @@ class Publish extends Component {
         [key]: value
       };
     });
-  }
+  };
 
-  onChange (files) {
-    this.setState({files})
+  onChange(files) {
+    this.setState({ files });
   }
-  onFail (mes) {
+  onFail(mes) {
     Taro.atMessage({
-      'message': `${mes.message}`,
-      'type': 'error',
+      message: `${mes.message}`,
+      type: "error"
     });
   }
-  onImageClick (index, file) {
-    console.log(index, file)
+  onImageClick(index, file) {
+    console.log(index, file);
   }
 
-  changeSelector = (e) => {
-    this.setState({typeValue: e.detail.value});
-  }
+  changeSelector = e => {
+    this.setState({ typeValue: e.detail.value });
+  };
 
-  changePhone = (value) => {
-    this.setState({phone: value});
-  }
+  changePhone = value => {
+    this.setState({ phone: value });
+  };
 
   reset = () => {
     this.setState({
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       typeValue: 0,
-      amount: '',
-      trans_type: '0',
-      files: [],
+      amount: "",
+      trans_type: "0",
+      files: []
     });
-  }
+  };
 
   onSubmit = async () => {
     try {
-      const { 
+      const {
         title,
         description,
         typeValue,
         amount,
         trans_type,
         files,
-        phone,
+        phone
       } = this.state;
       const { productTypes } = this.props;
-      invariant(!!title, '请输入宝贝标题');
-      invariant(!!phone, '请输入手机号码');
-      invariant(!!description, '请输入宝贝详情');
-      invariant(!!amount, '请输入宝贝价格');
-      invariant(files.length > 0, '请上传宝贝图片');
-      Taro.showLoading({ title: '上传图片中~', mask: true });
+      invariant(!!title, "请输入宝贝标题");
+      invariant(!!phone, "请输入手机号码");
+      invariant(!!description, "请输入宝贝详情");
+      invariant(!!amount, "请输入宝贝价格");
+      invariant(files.length > 0, "请上传宝贝图片");
+      Taro.showLoading({ title: "上传图片中~", mask: true });
       const pics = await productAction.uploadImages(files);
       const currentType = productTypes[typeValue];
 
@@ -106,12 +111,12 @@ class Publish extends Component {
         pics: pics,
         user_id: userinfo.result.user_id,
         trans_type: Number(trans_type),
-        phone,
+        phone
       };
       const result = await productAction.productAdd(payload);
-      invariant(result.code === ResponseCode.success, result.msg || ' ');
+      invariant(result.code === ResponseCode.success, result.msg || " ");
       Taro.hideLoading();
-      Taro.showToast({ title: '发布宝贝成功！', duration: 1000 });
+      Taro.showToast({ title: "发布宝贝成功！", duration: 1000 });
       this.reset();
       setTimeout(() => {
         Taro.navigateTo({
@@ -122,10 +127,10 @@ class Publish extends Component {
       Taro.hideLoading();
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
-  }
+  };
 
   renderImages = () => {
     const { files } = this.state;
@@ -142,7 +147,7 @@ class Publish extends Component {
         )}
       </View>
     );
-  }
+  };
 
   renderForms = () => {
     const { typeValue, amount, trans_type, phone } = this.state;
@@ -153,8 +158,16 @@ class Publish extends Component {
         <FormRow
           title='交易方式'
           buttons={[
-            {title: '线下交易', type: trans_type === '0' ? 'confirm' : 'cancel', onPress: () => this.handleChange('trans_type', '0')},
-            {title: '邮寄', type: trans_type === '1' ? 'confirm' : 'cancel', onPress: () => this.handleChange('trans_type', '1')},
+            {
+              title: "线下交易",
+              type: trans_type === "0" ? "confirm" : "cancel",
+              onPress: () => this.handleChange("trans_type", "0")
+            },
+            {
+              title: "邮寄",
+              type: trans_type === "1" ? "confirm" : "cancel",
+              onPress: () => this.handleChange("trans_type", "1")
+            }
           ]}
         />
         <Picker
@@ -165,7 +178,9 @@ class Publish extends Component {
         >
           <FormRow
             title='分类'
-            extraText={productTypes[typeValue] && productTypes[typeValue].name || ''}
+            extraText={
+              (productTypes[typeValue] && productTypes[typeValue].name) || ""
+            }
             arrow='right'
           />
         </Picker>
@@ -177,7 +192,7 @@ class Publish extends Component {
           inputName='member.name'
           inputValue={amount}
           inputPlaceHolder='请输入宝贝价格'
-          inputOnChange={(value) => this.handleChange('amount', value)}
+          inputOnChange={value => this.handleChange("amount", value)}
         />
         <FormRow
           title='手机号码'
@@ -187,12 +202,12 @@ class Publish extends Component {
           inputName='member.phone'
           inputValue={phone}
           inputPlaceHolder='请输入您的手机号码'
-          inputOnChange={(value) => this.changePhone(value)}
+          inputOnChange={value => this.changePhone(value)}
         />
       </View>
     );
-  }
-  render () {
+  };
+  render() {
     return (
       <View className='container container-color'>
         <View style='background-color: #ffffff'>
@@ -202,15 +217,15 @@ class Publish extends Component {
             type='text'
             placeholder='请输入宝贝标题 品牌型号'
             value={this.state.title}
-            onChange={(value) => this.handleChange('title', value)}
-          />  
+            onChange={value => this.handleChange("title", value)}
+          />
         </View>
-        
+
         <AtTextarea
           height={400}
           value={this.state.description}
-          onChange={(value) => {
-            this.handleChange('description', value)
+          onChange={({ detail: { value } }) => {
+            this.handleChange("description", value);
           }}
           placeholderStyle='font-size: 12px; color: #C6C6C6;'
           maxLength={200}
@@ -227,9 +242,8 @@ class Publish extends Component {
           确认发布
         </AtButton>
       </View>
-    )
+    );
   }
-
 }
 
 // #region 导出注意
@@ -239,12 +253,12 @@ class Publish extends Component {
 //
 // #endregion
 
-const select = (state) => {
-  const productTypes =  state.product.productTypes;
-  const productTypesSelector = productTypes.map((type) => type.name);
+const select = state => {
+  const productTypes = state.product.productTypes;
+  const productTypesSelector = productTypes.map(type => type.name);
   return {
     productTypes,
-    productTypesSelector,
+    productTypesSelector
   };
 };
 
