@@ -6,40 +6,46 @@
 
 .@{sign-prefix} {
   .padding(150px, t);
-  background: #f2f2f2;
+  background: linear-gradient(
+    180deg,
+    rgba(240, 80, 101, 1) 0%,
+    rgba(253, 167, 92, 1) 100%
+  );
   &-card {
-    // .margin(150px, t);
-    .padding(70px, b);
-    border-radius: 10px;
-    background: #fff;
-    width: 626px;
-    .margin((750px - 626px) / 2, l);
-    position: relative;
-    // .padding(50px, tb);
-    &-title {
-      position: relative;
-      z-index: 100;
-      .padding(50px, t);
-      width: 100%;
-      .flex(center, center);
-      font-size:50px;
-      font-weight:bold;
-      color:rgba(254,105,89,1);
-      text-shadow:0px 3px 3px rgba(254,105,89,0.25);
-    }
-    &-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 626px;
-      height: 220px;
-      .bg;
-      background-image: url('http://net.huanmusic.com/market/popup.bg.png');
+    .margin(150px, t);
+    .margin(30px, l);
+  }
+  &-box {
+    width: 690px;
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+
+    &-input {
+      height: 90px;
+      border-radius: 45px;
+      background: #fff;
+      &-text {
+        font-size: 30px;
+        color: #fff;
+        .margin(30px, l);
+        .margin(30px, b);
+      }
+      &-input {
+        display: flex;
+        flex: 1;
+        font-size: 24px;
+        .padding(30px, l);
+      }
     }
   }
   &-button {
-    .theme-button;
-    .margin(150px, t) !important;
+    // .theme-button;
+    background: #fff;
+    color: #f05065;
+    width: 690px;
+    height: 90px;
+    border-radius: 45px;
+    .margin(30px, t) !important;
   }
 }
