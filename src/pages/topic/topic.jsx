@@ -37,6 +37,16 @@ class Page extends Taro.Component {
     navigationBarTitleText: "帖子详情"
   };
 
+  onShareAppMessage = () => {
+    const { productDetail } = this.props;
+
+    return {
+      title: productDetail.title,
+      path: `/pages/product/topic?id=${productDetail.id}`,
+      imageUrl: productDetail.pics[0]
+    };
+  };
+
   componentDidShow() {
     this.init();
   }
@@ -215,6 +225,7 @@ class Page extends Taro.Component {
     const { productDetail } = this.props;
     return (
       <BaseItem
+        ableShare
         avator={
           (productDetail &&
             productDetail.userinfo &&
@@ -239,12 +250,12 @@ class Page extends Taro.Component {
     const { productDetail } = this.props;
     const images = productDetail.pics || [];
     return (
-      <View className='at-article'>
+      <View className="at-article">
         {images.length > 0 && (
           <Swiper
-            className='topic-swiper'
-            indicatorColor='#999'
-            indicatorActiveColor='#F05065'
+            className="topic-swiper"
+            indicatorColor="#999"
+            indicatorActiveColor="#F05065"
             circular
             indicatorDots
             autoplay
@@ -253,7 +264,7 @@ class Page extends Taro.Component {
               return (
                 <SwiperItem
                   key={`d${index}`}
-                  className='topic-swiper-item'
+                  className="topic-swiper-item"
                   onClick={() => {
                     Taro.previewImage({
                       urls: images,
@@ -262,7 +273,7 @@ class Page extends Taro.Component {
                   }}
                 >
                   <View
-                    className='topic-swiper-image'
+                    className="topic-swiper-image"
                     style={`background-image: url(${pic})`}
                   />
                 </SwiperItem>
@@ -270,10 +281,10 @@ class Page extends Taro.Component {
             })}
           </Swiper>
         )}
-        <View className='at-article__h1'>{productDetail.title}</View>
-        <View className='at-article__content'>
-          <View className='at-article__section'>
-            <View className='at-article__p'>{productDetail.description}</View>
+        <View className="at-article__h1">{productDetail.title}</View>
+        <View className="at-article__content">
+          <View className="at-article__section">
+            <View className="at-article__p">{productDetail.description}</View>
           </View>
         </View>
       </View>
@@ -335,9 +346,9 @@ class Page extends Taro.Component {
     ];
     return (
       <Footer
-        type='topic'
+        type="topic"
         items={items}
-        button='说点什么...'
+        button="说点什么..."
         buttonClick={() => this.showCommentHandle()}
         onItemClick={item => this.onItemClick(item)}
       />
@@ -358,14 +369,14 @@ class Page extends Taro.Component {
         {this.setSeller()}
         {this.setArticle()}
         <MyRow
-          title='留言板'
+          title="留言板"
           setSide
           sideFetch={order => this.changeOrder(order)}
         />
         <View className={`${prefix}-message`}>
           {messageTotal === 0 && <ListEmpty />}
           {!!messageLoading ? (
-            <AtActivityIndicator mode='center' size='large' />
+            <AtActivityIndicator mode="center" size="large" />
           ) : (
             messageList &&
             messageList.map(item => {
@@ -382,7 +393,7 @@ class Page extends Taro.Component {
             <AtLoadMore
               onClick={() => this.messageList()}
               status={status}
-              noMoreText='我也是有底线的'
+              noMoreText="我也是有底线的"
             />
           )}
         </View>

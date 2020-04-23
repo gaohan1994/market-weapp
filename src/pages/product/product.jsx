@@ -1,66 +1,75 @@
-import Taro from '@tarojs/taro';
-import invariant from 'invariant';
-import { View, Image } from '@tarojs/components';
-import numeral from 'numeral';
-import { AtLoadMore } from 'taro-ui';
-import dayJs from 'dayjs';
-import { connect } from '@tarojs/redux';
-import productAction from '../../actions/product';
-import { ResponseCode } from '../../common/request/config';
-import BaseItem from '../../component/item/BaseItem';
-import { defaultImage } from '../../common/util/common';
-import MyRow from '../../component/row/index';
+import Taro from "@tarojs/taro";
+import invariant from "invariant";
+import { View, Image } from "@tarojs/components";
+import numeral from "numeral";
+import { AtLoadMore } from "taro-ui";
+import dayJs from "dayjs";
+import { connect } from "@tarojs/redux";
+import productAction from "../../actions/product";
+import { ResponseCode } from "../../common/request/config";
+import BaseItem from "../../component/item/BaseItem";
+import { defaultImage } from "../../common/util/common";
+import MyRow from "../../component/row/index";
 import "./index.less";
-import loginManager from '../../common/util/login.manager';
-import Comment from './component/comment';
-import MessageItem from '../../component/item/MessageItem';
-import ListEmpty from '../../component/list/empty';
-import Footer from '../../component/layout/footer';
+import loginManager from "../../common/util/login.manager";
+import Comment from "./component/comment";
+import MessageItem from "../../component/item/MessageItem";
+import ListEmpty from "../../component/list/empty";
+import Footer from "../../component/layout/footer";
 
 let offset = 0;
-const prefix = 'product';
+const prefix = "product";
 
 class ProductDetail extends Taro.Component {
-
   defaultProps = {
     productDetail: {}
-  }
+  };
 
   state = {
     messageLoading: false,
     userinfo: {},
     showComment: false,
-    parentMessage: {},
-  }
+    parentMessage: {}
+  };
 
   config = {
-    navigationBarTitleText: '宝贝详情'
-  }
+    navigationBarTitleText: "宝贝详情"
+  };
 
-  componentDidShow () {
+  onShareAppMessage = () => {
+    const { productDetail } = this.props;
+
+    return {
+      title: productDetail.title,
+      path: `/pages/product/product?id=${productDetail.id}`,
+      imageUrl: productDetail.pics[0]
+    };
+  };
+
+  componentDidShow() {
     this.init();
   }
 
-  showCommentHandle () {
+  showCommentHandle() {
     this.setState({ showComment: true });
   }
 
-  async messageCallback () {
-    console.log('messageCallback');
+  async messageCallback() {
+    console.log("messageCallback");
     this.messageList(0);
   }
 
-  hideCommentHandle () {
-    this.setState({ 
+  hideCommentHandle() {
+    this.setState({
       showComment: false,
       parentMessage: {}
     });
   }
 
-  async init () {
+  async init() {
     try {
-      const { id } = this.$router.params;  
-      invariant(!!id, '请传入商品id');
+      const { id } = this.$router.params;
+      invariant(!!id, "请传入商品id");
       const userinfo = loginManager.getUserinfo();
       if (userinfo.success) {
         this.setState({ userinfo: userinfo.result });
@@ -70,51 +79,51 @@ class ProductDetail extends Taro.Component {
     } catch (error) {
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
   }
 
-  async onCart () {
+  async onCart() {
     try {
       const { productDetail } = this.props;
       Taro.showLoading();
-      const { id } = this.$router.params;  
-      const result = await productAction.productDetail({id});  
+      const { id } = this.$router.params;
+      const result = await productAction.productDetail({ id });
       Taro.hideLoading();
-      invariant(result.code === ResponseCode.success, result.msg || ' ');
+      invariant(result.code === ResponseCode.success, result.msg || " ");
 
       if (result.data.status !== 1) {
         Taro.showToast({
-          title: '该商品已被他人抢先一步，再去逛逛吧',
-          icon: 'none'
+          title: "该商品已被他人抢先一步，再去逛逛吧",
+          icon: "none"
         });
         return;
       }
       await productAction.cartProduct(productDetail);
       Taro.navigateTo({
-        url: '/pages/pay/cart'
+        url: "/pages/pay/cart"
       });
     } catch (error) {
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
   }
 
-  async onItemClick (item) {
+  async onItemClick(item) {
     const { userinfo } = this.state;
     const { productDetail } = this.props;
     if (!userinfo.user_id) {
       Taro.showToast({
-        title: '请先登录',
-        icon: 'none',
+        title: "请先登录",
+        icon: "none",
         duration: 1000
       });
       setTimeout(() => {
         Taro.navigateTo({
-          url: '/pages/sign/login'
+          url: "/pages/sign/login"
         });
       }, 1000);
       return;
@@ -125,39 +134,51 @@ class ProductDetail extends Taro.Component {
         return;
       }
       if (item.key === 2) {
-        
-        if (productDetail && productDetail.collect && productDetail.collect.collect) {
+        if (
+          productDetail &&
+          productDetail.collect &&
+          productDetail.collect.collect
+        ) {
           //取消收藏
-          const result = await productAction.collectCancel({id: productDetail.collect.id});
-          invariant(result.code === ResponseCode.success, result.msg || ' ');
-          Taro.showToast({title: '取消收藏'});
+          const result = await productAction.collectCancel({
+            id: productDetail.collect.id
+          });
+          invariant(result.code === ResponseCode.success, result.msg || " ");
+          Taro.showToast({ title: "取消收藏" });
           setTimeout(() => {
-            this.fetchData(productDetail.id);  
+            this.fetchData(productDetail.id);
           }, 1000);
           return;
         }
         // 收藏
-        const result = await productAction.collectAdd({user_id: userinfo.user_id, item_id: productDetail.id});
-        invariant(result.code === ResponseCode.success, result.msg || ' ');
-        Taro.showToast({title: '收藏成功！'});
+        const result = await productAction.collectAdd({
+          user_id: userinfo.user_id,
+          item_id: productDetail.id
+        });
+        invariant(result.code === ResponseCode.success, result.msg || " ");
+        Taro.showToast({ title: "收藏成功！" });
         setTimeout(() => {
           this.fetchData(productDetail.id);
         }, 1000);
         return;
       }
       if (item.key === 3) {
-        const payload = { item_id: productDetail.id, user_id: userinfo.user_id, type: 0 };
+        const payload = {
+          item_id: productDetail.id,
+          user_id: userinfo.user_id,
+          type: 0
+        };
         const result = await productAction.fetchItemLike(payload);
-        invariant(result.code === ResponseCode.success, result.msg || ' ');
+        invariant(result.code === ResponseCode.success, result.msg || " ");
 
         if (productDetail.like && !!productDetail.like.id) {
           Taro.showToast({
-            title: '取消点赞',
-            icon: 'none'
+            title: "取消点赞",
+            icon: "none"
           });
         } else {
           Taro.showToast({
-            title: '点赞成功',
+            title: "点赞成功"
           });
         }
         setTimeout(() => {
@@ -168,104 +189,115 @@ class ProductDetail extends Taro.Component {
     } catch (error) {
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
   }
 
-  async fetchData (id) {
+  async fetchData(id) {
     try {
       Taro.showLoading();
-      const result = await productAction.productDetail({id});  
-      invariant(result.code === ResponseCode.success, result.msg || ' ');
+      const result = await productAction.productDetail({ id });
+      invariant(result.code === ResponseCode.success, result.msg || " ");
       Taro.hideLoading();
     } catch (error) {
       Taro.hideLoading();
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
   }
 
-  async messageList (page) {
+  async messageList(page) {
     try {
       const { id } = this.$router.params;
-      this.setState({messageLoading: true});
+      this.setState({ messageLoading: true });
       const result = await productAction.messageList({
         item_id: id,
-        offset: typeof page === 'number' ? page : offset
+        offset: typeof page === "number" ? page : offset
       });
-      invariant(result.code === ResponseCode.success, result.msg || ' ');
-      this.setState({messageLoading: false});
-      if (typeof page === 'number') {
+      invariant(result.code === ResponseCode.success, result.msg || " ");
+      this.setState({ messageLoading: false });
+      if (typeof page === "number") {
         offset = page;
       } else {
         offset = offset + 1;
       }
     } catch (error) {
-      this.setState({messageLoading: false});
+      this.setState({ messageLoading: false });
       Taro.showToast({
         title: error.message,
-        icon: 'none'
+        icon: "none"
       });
     }
   }
 
-  onMessageClick = (message) => {
+  onMessageClick = message => {
     this.setState({
       parentMessage: message,
-      showComment: true,
+      showComment: true
     });
-  }
+  };
 
-  setSeller () {
+  setSeller() {
     const { productDetail } = this.props;
     return (
       <BaseItem
-        avator={productDetail && productDetail.userinfo && productDetail.userinfo.avatarUrl || defaultImage}
-        title={productDetail && productDetail.userinfo && productDetail.userinfo.nickName}
-        subTitle={`${dayJs(productDetail.create_time || '').format('YYYY.MM.DD')} 发布`}
-        mater={numeral(productDetail.amount).format('0.00')}
+        ableShare
+        avator={
+          (productDetail &&
+            productDetail.userinfo &&
+            productDetail.userinfo.avatarUrl) ||
+          defaultImage
+        }
+        title={
+          productDetail &&
+          productDetail.userinfo &&
+          productDetail.userinfo.nickName
+        }
+        subTitle={`${dayJs(productDetail.create_time || "").format(
+          "YYYY.MM.DD"
+        )} 发布`}
+        mater={numeral(productDetail.amount).format("0.00")}
         isRenderContent={false}
       />
     );
   }
 
-  setArticle () {
+  setArticle() {
     const { productDetail } = this.props;
     const images = productDetail.pics || [];
 
     return (
       <View className='at-article'>
-        <View className='at-article__h1'>
-          {productDetail.title}
-        </View>
+        <View className='at-article__h1'>{productDetail.title}</View>
         <View className='at-article__content'>
           <View className='at-article__section'>
             <View className='at-article__p'>
-              {`${productDetail && productDetail.viewing_count || 0}次浏览，${productDetail && productDetail.like_count || 0}人喜欢`}
+              {`${(productDetail && productDetail.viewing_count) ||
+                0}次浏览，${(productDetail && productDetail.like_count) ||
+                0}人喜欢`}
             </View>
-            <View className='at-article__p'>
-              {productDetail.description}
-            </View>
-            {images.length > 0 && images.map((pic, index) => {
-              return (
-                <Image
-                  key={`p${index}`} 
-                  className='at-article__img' 
-                  src={pic} 
-                  mode='widthFix'
-                />
-              )
-            })}
+            <View className='at-article__p'>{productDetail.description}</View>
+            {images.length > 0 &&
+              images.map((pic, index) => {
+                return (
+                  <Image
+                    key={`p${index}`}
+                    className='at-article__img'
+                    src={pic}
+                    mode='widthFix'
+                  />
+                );
+              })}
           </View>
         </View>
       </View>
     );
   }
 
-  setMessage () {
+  setMessage() {
     const { userinfo, showComment, parentMessage } = this.state;
     const { productDetail } = this.props;
     return (
@@ -274,64 +306,85 @@ class ProductDetail extends Taro.Component {
         userinfo={userinfo}
         isOpened={showComment}
         parentMessage={parentMessage}
-        onCancel={() => this.hideCommentHandle()}     
-        callback={() => this.messageCallback()}        
+        onCancel={() => this.hideCommentHandle()}
+        callback={() => this.messageCallback()}
       />
     );
   }
 
-  setFooter () {
+  setFooter() {
     const { productDetail } = this.props;
     const items = [
-      {key: 1, title: '留言', icon: 'message'},
+      { key: 1, title: "留言", icon: "message" },
       {
-        key: 2, 
-        title: productDetail && productDetail.collect && productDetail.collect.collect ? '取消收藏' : '收藏', 
-        icon: productDetail && productDetail.collect && productDetail.collect.collect ? 'heart-2' : 'heart',
-        color: productDetail && productDetail.collect && productDetail.collect.collect ? '#DF394D' : ''
+        key: 2,
+        title:
+          productDetail &&
+          productDetail.collect &&
+          productDetail.collect.collect
+            ? "取消收藏"
+            : "收藏",
+        icon:
+          productDetail &&
+          productDetail.collect &&
+          productDetail.collect.collect
+            ? "heart-2"
+            : "heart",
+        color:
+          productDetail &&
+          productDetail.collect &&
+          productDetail.collect.collect
+            ? "#DF394D"
+            : ""
       },
       {
         key: 3,
-        title: productDetail && productDetail.like && !!productDetail.like.id ? '取消点赞' : '点赞',
-        iconUrl:  productDetail && productDetail.like && !!productDetail.like.id 
-        ? '//net.huanmusic.com/market/like.selected.png'
-        : '//net.huanmusic.com/market/like.png'
+        title:
+          productDetail && productDetail.like && !!productDetail.like.id
+            ? "取消点赞"
+            : "点赞",
+        iconUrl:
+          productDetail && productDetail.like && !!productDetail.like.id
+            ? "//net.huanmusic.com/market/like.selected.png"
+            : "//net.huanmusic.com/market/like.png"
       }
     ];
     return (
       <Footer
         items={items}
-        onItemClick={(item) => this.onItemClick(item)}
+        onItemClick={item => this.onItemClick(item)}
         button='我想要'
         buttonClick={() => this.onCart()}
       />
-    )
+    );
   }
 
-  render () {
+  render() {
     const { messageLoading } = this.state;
     const { messageList, messageTotal } = this.props;
-    const status = messageList.length >= messageTotal 
-      ? 'noMore'
-      : messageLoading ? 'loading' : 'more';
+    const status =
+      messageList.length >= messageTotal
+        ? "noMore"
+        : messageLoading
+        ? "loading"
+        : "more";
     return (
       <View className={`${prefix}`}>
         {this.setSeller()}
         {this.setArticle()}
         <MyRow title='留言板' />
         <View className={`${prefix}-message`}>
-          {messageTotal === 0 && (
-            <ListEmpty />
-          )}
-          {messageList && messageList.map((item) => {
-            return (
-              <MessageItem
-                key={item.id}
-                message={item}
-                onClick={() => this.onMessageClick(item)}
-              />
-            )
-          })}
+          {messageTotal === 0 && <ListEmpty />}
+          {messageList &&
+            messageList.map(item => {
+              return (
+                <MessageItem
+                  key={item.id}
+                  message={item}
+                  onClick={() => this.onMessageClick(item)}
+                />
+              );
+            })}
           {messageTotal > 0 && (
             <AtLoadMore
               onClick={() => this.messageList()}
@@ -343,16 +396,16 @@ class ProductDetail extends Taro.Component {
         {this.setMessage()}
         {this.setFooter()}
       </View>
-    )
+    );
   }
 }
 
-const select = (state) => {
+const select = state => {
   return {
     productDetail: state.product.productDetail,
     messageList: state.product.messageList,
-    messageTotal: state.product.messageTotal,
+    messageTotal: state.product.messageTotal
   };
-}
+};
 
 export default connect(select)(ProductDetail);

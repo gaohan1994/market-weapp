@@ -1,5 +1,6 @@
 import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, Button } from "@tarojs/components";
+import { AtIcon } from "taro-ui";
 import classNames from "classnames";
 import "./style.less";
 
@@ -12,7 +13,14 @@ class BaseItem extends Taro.Component {
   };
 
   renderHeader() {
-    const { avator, title, subTitle, mater, headerClick } = this.props;
+    const {
+      avator,
+      title,
+      subTitle,
+      mater,
+      headerClick,
+      ableShare = false
+    } = this.props;
     return (
       <View className={`${prefix}-header`} onClick={headerClick}>
         {!!avator && (
@@ -28,6 +36,16 @@ class BaseItem extends Taro.Component {
           )}
         </View>
         {!!mater && <View className={`${prefix}-header-price`}>{mater}</View>}
+        {ableShare && (
+          <Button
+            openType='share'
+            style='background: #ffffff'
+            className={`${prefix}-share`}
+          >
+            <AtIcon value='share' size='15' color='#666666' />
+            <View>分享</View>
+          </Button>
+        )}
       </View>
     );
   }
