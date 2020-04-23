@@ -7,6 +7,7 @@ import "../index/index.less";
 import productAction from "../../actions/product";
 import loginManager from "../../common/util/login.manager";
 import Menu from "../../component/menu/Menu";
+import UserContact from "./component/contact";
 
 const prefix = "user";
 
@@ -190,6 +191,8 @@ class User extends Taro.Component {
             登录
           </AtButton>
         )}
+
+        <UserContact />
       </View>
     );
   }
