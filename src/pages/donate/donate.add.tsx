@@ -2,7 +2,7 @@
  * @Author: Ghan
  * @Date: 2020-04-17 15:28:36
  * @Last Modified by: Ghan
- * @Last Modified time: 2020-04-21 14:39:04
+ * @Last Modified time: 2020-04-22 09:57:56
  */
 import Taro, { useState } from "@tarojs/taro";
 import { View } from "@tarojs/components";
@@ -28,6 +28,7 @@ function DonateAdd() {
       invariant(!!title, "请输入标题");
       invariant(!!description, "请输入描述");
       invariant(!!phone, "请输入手机号码");
+      invariant(files.length > 0, "请上传公益图片");
       const userinfo = await loginManager.getUserinfo();
       const pics =
         files.length > 0 ? await productAction.uploadImages(files) : [];

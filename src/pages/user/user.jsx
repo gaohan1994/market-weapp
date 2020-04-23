@@ -172,12 +172,12 @@ class User extends Taro.Component {
             {
               id: 6,
               name: `我的公益`,
-              icon: `http://net.huanmusic.com/market/analysis.png`
+              icon: `http://net.huanmusic.com/market/home2.png`
             },
             {
               id: 7,
               name: `发布公益`,
-              icon: `http://net.huanmusic.com/market/collection.png`
+              icon: `http://net.huanmusic.com/market/shop2.png`
             }
           ]}
         />

@@ -37,7 +37,8 @@ class App extends Component {
       "pages/topic/topic.user",
       "pages/message/message.list",
       "pages/donate/donate.add",
-      "pages/donate/donate.list"
+      "pages/donate/donate.list",
+      "pages/donate/donate.detail"
     ],
     window: {
       backgroundTextStyle: "light",
